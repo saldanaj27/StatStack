@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useSimulation } from '../../context/SimulationContext'
 import { getCurrentWeekGames, getGames } from '../../api/games'
 import GameBox from './components/GameBox'
 import './Scores.css'
@@ -22,13 +23,14 @@ const getWeekLabel = (weekNum) => {
 }
 
 export default function Scores() {
+  const { simulation } = useSimulation()
   const [week, setWeek] = useState(null)
   const [season, setSeason] = useState(2025)
   const [games, setGames] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  // Initialize with current/most recent week
+  // Initialize with current/most recent week (re-runs when simulation toggles)
   useEffect(() => {
     const initializeWeek = async () => {
       setLoading(true)
@@ -82,7 +84,7 @@ export default function Scores() {
 
     initializeWeek()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [simulation.active, simulation.season, simulation.week])
 
   // Handle manual week selection changes
   const handleWeekChange = async (newWeek) => {
