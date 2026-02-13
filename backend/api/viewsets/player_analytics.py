@@ -2,7 +2,7 @@ from collections import defaultdict
 
 from django.conf import settings
 from django.core.cache import cache
-from django.db.models import Avg, Count, F, Q, Sum
+from django.db.models import Avg, Count, F, Q
 from django.utils import timezone
 from rest_framework.decorators import action
 from rest_framework.response import Response
