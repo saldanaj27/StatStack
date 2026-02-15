@@ -292,7 +292,13 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 if not DEBUG:
     # Trust proxy headers from Railway/load balancer for SSL detection
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-    SECURE_SSL_REDIRECT = True
+    # Railway's internal health check hits the container directly over HTTP
+    # (without the proxy), so we let the proxy handle SSL redirect instead
+    # of Django to avoid a redirect loop on health checks.
+    SECURE_SSL_REDIRECT = os.environ.get("SECURE_SSL_REDIRECT", "False").lower() in (
+        "true",
+        "1",
+    )
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = "DENY"
