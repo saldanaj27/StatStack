@@ -32,4 +32,5 @@ USER appuser
 EXPOSE 8000
 
 # Use shell form so $PORT is expanded at runtime (Railway sets PORT dynamically)
-CMD python manage.py migrate && gunicorn untitled_football_project.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 3 --log-level info --access-logfile - --error-logfile -
+# Run migrate separately — log failures but don't block gunicorn startup
+CMD python manage.py migrate --noinput 2>&1; gunicorn untitled_football_project.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 2 --log-level info --access-logfile - --error-logfile -
