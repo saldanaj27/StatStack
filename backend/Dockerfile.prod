@@ -29,8 +29,7 @@ RUN adduser --disabled-password --gecos '' appuser && \
     chown -R appuser:appuser /app
 USER appuser
 
-# Railway sets $PORT dynamically — don't hardcode
 EXPOSE 8000
 
-# Default command (overridden by railway.json startCommand)
-CMD ["gunicorn", "untitled_football_project.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
+# Use shell form so $PORT is expanded at runtime (Railway sets PORT dynamically)
+CMD python manage.py migrate && gunicorn untitled_football_project.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 3 --log-level info --access-logfile - --error-logfile -
