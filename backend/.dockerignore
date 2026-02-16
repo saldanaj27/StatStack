@@ -1,0 +1,11 @@
+.env
+.env.*
+env/
+venv/
+__pycache__/
+*.pyc
+.git/
+.gitignore
+*.md
+.pytest_cache/
+predictions/trained_models/

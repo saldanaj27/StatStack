@@ -1,35 +1,27 @@
-# Production Dockerfile for Django backend
 FROM python:3.12-slim
 
-# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV DJANGO_SETTINGS_MODULE=untitled_football_project.settings
 
-# Set work directory
 WORKDIR /app
 
-# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt gunicorn
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project files
 COPY . .
 
-# Collect static files (uses default insecure key at build time only)
 RUN python manage.py collectstatic --noinput
 
-# Create non-root user for security
 RUN adduser --disabled-password --gecos '' appuser && \
     chown -R appuser:appuser /app
 USER appuser
 
-EXPOSE 8000
+EXPOSE ${PORT:-8000}
 
-# Use shell form so $PORT is expanded at runtime (Railway sets PORT dynamically)
-CMD python manage.py migrate --noinput; gunicorn untitled_football_project.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 2 --timeout 120 --log-level info --access-logfile - --error-logfile -
+CMD ["sh", "-c", "python manage.py migrate --noinput || true && exec gunicorn untitled_football_project.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 2 --timeout 120"]
