@@ -32,5 +32,4 @@ USER appuser
 EXPOSE 8000
 
 # Use shell form so $PORT is expanded at runtime (Railway sets PORT dynamically)
-# Background migrate so gunicorn starts immediately for healthcheck
-CMD python manage.py migrate --noinput & gunicorn untitled_football_project.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 2 --timeout 120 --log-level info --access-logfile - --error-logfile -
+CMD gunicorn untitled_football_project.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 1 --timeout 120 --preload --log-level debug --access-logfile - --error-logfile -
