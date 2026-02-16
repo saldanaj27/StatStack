@@ -32,4 +32,4 @@ USER appuser
 EXPOSE 8000
 
 # Use shell form so $PORT is expanded at runtime (Railway sets PORT dynamically)
-CMD gunicorn untitled_football_project.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 1 --timeout 120 --preload --log-level debug --access-logfile - --error-logfile -
+CMD echo "=== Starting ===" && echo "PORT=$PORT" && echo "PWD=$(pwd)" && ls -la && python -c "import django; django.setup(); print('Django OK')" && echo "Binding to 0.0.0.0:${PORT:-8000}" && exec gunicorn untitled_football_project.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 1 --timeout 120 --preload --log-level debug --access-logfile - --error-logfile -
