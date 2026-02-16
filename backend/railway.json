@@ -5,7 +5,7 @@
     "dockerfilePath": "Dockerfile.prod"
   },
   "deploy": {
-    "startCommand": "python manage.py migrate && echo \"Starting gunicorn on port ${PORT:-8000}\" && gunicorn untitled_football_project.wsgi:application --bind 0.0.0.0:${PORT:-8000} --log-level info --access-logfile - --error-logfile -",
+    "startCommand": "python manage.py migrate --noinput 2>&1 || true; echo \"Starting gunicorn on port ${PORT:-8000}\"; exec gunicorn untitled_football_project.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 2 --timeout 120 --log-level info --access-logfile - --error-logfile -",
     "healthcheckPath": "/health/",
     "healthcheckTimeout": 120,
     "restartPolicyType": "ON_FAILURE",
