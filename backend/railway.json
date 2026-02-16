@@ -6,7 +6,7 @@
   },
   "deploy": {
     "startCommand": "python manage.py migrate && echo \"Starting gunicorn on port ${PORT:-8000}\" && gunicorn untitled_football_project.wsgi:application --bind 0.0.0.0:${PORT:-8000} --log-level info --access-logfile - --error-logfile -",
-    "healthcheckPath": "/api/teams/",
+    "healthcheckPath": "/health/",
     "healthcheckTimeout": 120,
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 3
