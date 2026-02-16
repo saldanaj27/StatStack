@@ -12,7 +12,6 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libpq-dev \
-    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
@@ -22,7 +21,7 @@ RUN pip install --no-cache-dir -r requirements.txt gunicorn
 # Copy project files
 COPY . .
 
-# Collect static files
+# Collect static files (uses default insecure key at build time only)
 RUN python manage.py collectstatic --noinput
 
 # Create non-root user for security
@@ -30,12 +29,8 @@ RUN adduser --disabled-password --gecos '' appuser && \
     chown -R appuser:appuser /app
 USER appuser
 
-# Expose port
+# Railway sets $PORT dynamically — don't hardcode
 EXPOSE 8000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/api/teams/ || exit 1
-
-# Run gunicorn
+# Default command (overridden by railway.json startCommand)
 CMD ["gunicorn", "untitled_football_project.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
