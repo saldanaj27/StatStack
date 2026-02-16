@@ -45,6 +45,9 @@ RAILWAY_PUBLIC_DOMAIN = os.environ.get("RAILWAY_PUBLIC_DOMAIN")
 if RAILWAY_PUBLIC_DOMAIN:
     ALLOWED_HOSTS.append(RAILWAY_PUBLIC_DOMAIN)
 
+# Railway's healthcheck probes use this host header
+ALLOWED_HOSTS.append("healthcheck.railway.app")
+
 # CSRF trusted origins for production
 CSRF_TRUSTED_ORIGINS = os.environ.get(
     "CSRF_TRUSTED_ORIGINS", "http://localhost:5173"
