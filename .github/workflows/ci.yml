@@ -57,6 +57,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install coverage
 
       - name: Run migrations
         working-directory: backend
@@ -67,14 +68,20 @@ jobs:
           DEBUG: "True"
         run: python manage.py migrate
 
-      - name: Run tests
+      - name: Run tests with coverage
         working-directory: backend
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_fantasydb
           REDIS_URL: redis://localhost:6379/1
           SECRET_KEY: test-secret-key-for-ci
           DEBUG: "True"
-        run: python manage.py test api -v 2
+        run: coverage run manage.py test api predictions -v 2
+
+      - name: Coverage report
+        working-directory: backend
+        run: |
+          coverage report --show-missing
+          coverage xml
 
   # Backend Lint
   backend-lint:

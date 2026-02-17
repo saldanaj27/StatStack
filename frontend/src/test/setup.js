@@ -23,3 +23,14 @@ const localStorageMock = {
   clear: vi.fn(),
 }
 Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+
+// Mock IntersectionObserver for components using viewport detection
+class IntersectionObserverMock {
+  constructor(callback) {
+    this.callback = callback
+  }
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+globalThis.IntersectionObserver = IntersectionObserverMock
