@@ -2,7 +2,7 @@ FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-ENV DJANGO_SETTINGS_MODULE=untitled_football_project.settings
+ENV DJANGO_SETTINGS_MODULE=statstack.settings
 
 WORKDIR /app
 
@@ -24,4 +24,4 @@ USER appuser
 
 EXPOSE ${PORT:-8000}
 
-CMD ["sh", "-c", "python manage.py migrate --noinput || true && exec gunicorn untitled_football_project.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 2 --timeout 120"]
+CMD ["sh", "-c", "python manage.py migrate --noinput || true && exec gunicorn statstack.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 2 --timeout 120"]

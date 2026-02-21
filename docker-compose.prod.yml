@@ -6,7 +6,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile.prod
     container_name: fantasy_web_prod
-    command: gunicorn untitled_football_project.wsgi:application --bind 0.0.0.0:8000 --workers 3
+    command: gunicorn statstack.wsgi:application --bind 0.0.0.0:8000 --workers 3
     volumes:
       - static_volume:/app/staticfiles
     expose:
@@ -84,7 +84,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile.prod
     container_name: fantasy_celery_prod
-    command: celery -A untitled_football_project worker -l info
+    command: celery -A statstack worker -l info
     env_file:
       - .env.prod
     depends_on:
@@ -99,7 +99,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile.prod
     container_name: fantasy_celery_beat_prod
-    command: celery -A untitled_football_project beat -l info
+    command: celery -A statstack beat -l info
     env_file:
       - .env.prod
     depends_on:
