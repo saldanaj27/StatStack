@@ -19,7 +19,7 @@ React SPA (Vite) → REST API (Django + DRF) → PostgreSQL + Redis cache
 ## Repository Structure
 
 ```
-Fantasy-Football-Project/
+StatStack/
 ├── backend/
 │   ├── api/                    # API routing, viewsets, serializers
 │   │   ├── urls.py             # Main API router
@@ -42,7 +42,7 @@ Fantasy-Football-Project/
 │   │   ├── trained_models/     # Saved .joblib model files (not in git)
 │   │   └── management/commands/
 │   │       └── train_model.py  # Training management command
-│   └── untitled_football_project/  # Django settings module (legacy name)
+│   └── statstack/                  # Django settings module
 │       ├── settings.py
 │       ├── urls.py
 │       ├── wsgi.py
@@ -122,7 +122,7 @@ npm run dev   # http://localhost:5173
 
 | Purpose | File |
 |---------|------|
-| Django settings | `backend/untitled_football_project/settings.py` |
+| Django settings | `backend/statstack/settings.py` |
 | API URL router | `backend/api/urls.py` |
 | Core viewsets | `backend/api/views.py` |
 | Analytics endpoints | `backend/api/viewsets/analytics.py` |
@@ -167,7 +167,7 @@ cd frontend && npm test
 3. **Completed game detection:** `home_score` field has both `default=0` and `null=True`. Check `home_score is None` (not `== 0`) to determine if a game hasn't been played
 4. **Predictions** only work for upcoming games where `home_score is None`
 5. **Feature extraction** requires at least 3 prior completed games per team — early-season games can't be predicted
-6. **Django project folder** is `untitled_football_project` (legacy placeholder name) — all imports reference this
+6. **Django project folder** is `statstack` — all imports reference this
 7. **Frontend env vars** must be prefixed with `VITE_` for Vite to expose them to client code
 8. **PredictionService** is a singleton — the ML model is lazy-loaded on first prediction request, not at Django startup
 9. **`games/constants.py` line 4** has a typo: `'Post Season}'` (extra closing brace)
