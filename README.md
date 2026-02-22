@@ -132,7 +132,7 @@ StatStack/
 │   ├── games/                  # Game model + seed commands
 │   ├── players/                # Player model + seed commands
 │   ├── teams/                  # Team model + seed commands
-│   ├── stats/                  # Player and team game stat models
+│   ├── stats/                  # Player and team game stat models + Celery tasks
 │   ├── predictions/            # ML prediction pipeline
 │   │   ├── features.py         # Feature extraction (44 features)
 │   │   ├── training.py         # Training dataset builder
@@ -140,9 +140,13 @@ StatStack/
 │   │   ├── services.py         # PredictionService singleton
 │   │   ├── views.py            # Prediction API endpoints
 │   │   └── trained_models/     # Saved .joblib files (not in git)
+│   ├── draft/                  # Fantasy draft simulator
+│   │   ├── models.py           # DraftSession, DraftPick models
+│   │   ├── views.py            # Draft API endpoints
+│   │   └── services.py         # DraftAI logic
 │   ├── Dockerfile              # Dev container
 │   ├── Dockerfile.prod         # Production container
-│   └── statstack/                  # Django settings module
+│   └── statstack/              # Django settings module
 │
 ├── frontend/
 │   ├── src/
@@ -171,20 +175,34 @@ StatStack/
 | Endpoint | Description |
 |----------|-------------|
 | `GET /api/teams/` | All NFL teams |
-| `GET /api/players/` | Players (filterable by position, team) |
-| `GET /api/players/search/` | Player search with stats |
+| `GET /api/players/` | Players (filterable by position, team, status) |
+| `GET /api/players/search/` | Player search with aggregated fantasy stats |
 | `GET /api/games/` | Games by season/week |
 | `GET /api/games/currentWeek/` | Current week's games |
 
-### Analytics
+### Team Analytics
 | Endpoint | Description |
 |----------|-------------|
 | `GET /api/analytics/recent-stats?team_id=X&games=N` | Team stats over last N games |
 | `GET /api/analytics/defense-allowed?team_id=X&position=RB` | Defense vs position |
+| `GET /api/analytics/usage-metrics?team_id=X&games=N` | Target shares, carry shares, pass/run split |
+| `GET /api/analytics/usage-trends?team_id=X&games=N` | Per-game usage trend data over time |
+| `GET /api/analytics/team-game-log?team_id=X&games=N` | Game-by-game log with scores and stats |
+
+### Player Analytics
+| Endpoint | Description |
+|----------|-------------|
 | `GET /api/analytics/player-stats?team_id=X` | Players with advanced metrics |
-| `GET /api/analytics/usage-metrics?team_id=X` | Target shares, snap counts |
-| `GET /api/analytics/player-comparison?player_id=X` | Comparison data |
-| `GET /api/analytics/game-box-score?game_id=X` | Box score (completed games) |
+| `GET /api/analytics/player-comparison?player_id=X` | Head-to-head comparison data |
+| `GET /api/analytics/player-trend?player_id=X&games=N` | Per-game fantasy point trend |
+| `GET /api/analytics/best-team` | Best available player at each position |
+
+### Game Analytics
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/analytics/game-box-score?game_id=X` | Box score for completed games |
+| `GET /api/analytics/head-to-head?team1=X&team2=Y` | Historical head-to-head matchup results |
+| `GET /api/analytics/common-opponents?team1=X&team2=Y` | Performance against shared opponents |
 
 ### Predictions
 | Endpoint | Description |
@@ -192,6 +210,15 @@ StatStack/
 | `GET /api/predictions/game/?game_id=X` | Single game prediction |
 | `GET /api/predictions/week/?season=X&week=Y` | All predictions for a week |
 | `GET /api/predictions/model-info/` | Active model version and metrics |
+
+### Draft Simulator
+| Endpoint | Description |
+|----------|-------------|
+| `POST /api/draft/create/` | Create a new draft session |
+| `POST /api/draft/{id}/pick/` | Make a user pick, AI auto-advances |
+| `GET /api/draft/{id}/board/` | Full draft board state |
+| `GET /api/draft/{id}/available/` | Available players (filterable by position) |
+| `GET /api/draft/{id}/roster/` | User's roster with projected totals |
 
 ## Testing
 
