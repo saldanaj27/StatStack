@@ -201,3 +201,14 @@ cd frontend && npm test
 - **Frontend:** Vercel
 - **CI/CD:** GitHub Actions — tests on PR, deploy on merge to main
 - **Docker (prod):** `docker-compose.prod.yml` with nginx, gunicorn, PostgreSQL, Redis, Celery
+
+## Skills
+
+Use the following skills for their respective domains:
+
+| Skill | Use for |
+|-------|---------|
+| `django-test-coverage` | Writing tests, adding coverage, fixing regressions, checking untested code |
+| `security-audit-remediation` | AUDIT.md fixes, Django hardening, CORS/SSL, repo hygiene, nginx headers, pre-prod security |
+| `react-component-scaffold` | New pages, components, charts, data tables, API hooks, UI features |
+| `prod-deployment` | Railway/Vercel deploys, Docker, GitHub Actions CI/CD, nginx config, migrations |
