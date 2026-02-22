@@ -64,11 +64,16 @@ class PlayerViewSet(viewsets.ModelViewSet):
         search = request.query_params.get("search", "")
         position = request.query_params.get("position")
         team = request.query_params.get("team")
-        num_games = int(request.query_params.get("games", 3))
-        limit = int(request.query_params.get("limit", 50))
+        try:
+            num_games = int(request.query_params.get("games", 3))
+            limit = int(request.query_params.get("limit", 50))
+        except (ValueError, TypeError):
+            return Response(
+                {"error": "'games' and 'limit' must be integers"}, status=400
+            )
 
         # Build cache key
-        cache_key = f"player_search_{search}_{position}_{team}_{num_games}_{limit}"
+        cache_key = f"player_search:{search}:{position}:{team}:{num_games}:{limit}"
         cached_data = cache.get(cache_key)
         if cached_data:
             return Response(cached_data)
@@ -161,7 +166,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
 
 
 class GameViewSet(SimulationMixin, viewsets.ModelViewSet):
-    queryset = Game.objects.all()
+    queryset = Game.objects.all().select_related("home_team", "away_team")
     serializer_class = GameSerializer
 
     def get_serializer_context(self):

@@ -75,8 +75,6 @@ app.conf.update(
     # Task time limits
     task_soft_time_limit=600,  # 10 minutes
     task_time_limit=900,  # 15 minutes (hard limit)
-    # Result backend
-    result_backend="redis://localhost:6379/0",
     # Worker settings
     worker_prefetch_multiplier=1,
     worker_max_tasks_per_child=50,

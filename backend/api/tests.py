@@ -325,7 +325,7 @@ class AnalyticsAPITests(BaseTestCase):
         """Test recent-stats requires team_id parameter"""
         response = self.client.get("/api/analytics/recent-stats/")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn("Error", response.data)
+        self.assertIn("error", response.data)
 
     def test_recent_stats_success(self):
         """Test recent-stats with valid team_id"""

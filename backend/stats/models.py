@@ -103,12 +103,12 @@ class FootballTeamGameStat(models.Model):
 
     @property
     def completion_percentage(self):
-        return self.pass_completions * 100 / self.pass_attempts
+        return self.pass_completions * 100 / self.pass_attempts if self.pass_attempts else 0.0
 
     @property
     def pass_avg(self):
-        return self.pass_yards / self.pass_attempts
+        return self.pass_yards / self.pass_attempts if self.pass_attempts else 0.0
 
     @property
     def rush_avg(self):
-        return self.rush_yards / self.rush_attempts
+        return self.rush_yards / self.rush_attempts if self.rush_attempts else 0.0

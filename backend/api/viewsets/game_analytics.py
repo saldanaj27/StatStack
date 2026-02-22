@@ -23,15 +23,15 @@ class GameAnalyticsMixin:
         game_id = request.query_params.get("game_id")
 
         if not game_id:
-            return Response({"Error": "'game_id' is required"}, status=400)
+            return Response({"error": "'game_id' is required"}, status=400)
 
         try:
             game = Game.objects.select_related("home_team", "away_team").get(id=game_id)
         except Game.DoesNotExist:
-            return Response({"Error": "Game not found"}, status=404)
+            return Response({"error": "Game not found"}, status=404)
 
         if game.home_score is None:
-            return Response({"Error": "Game has not been played yet"}, status=400)
+            return Response({"error": "Game has not been played yet"}, status=400)
 
         home_team_stats = FootballTeamGameStat.objects.filter(
             game_id=game_id, team=game.home_team
@@ -121,14 +121,17 @@ class GameAnalyticsMixin:
         """
         team1_id = request.query_params.get("team1_id")
         team2_id = request.query_params.get("team2_id")
-        limit = int(request.query_params.get("limit", 5))
+        try:
+            limit = int(request.query_params.get("limit", 5))
+        except (ValueError, TypeError):
+            return Response({"error": "'limit' must be an integer"}, status=400)
 
         if not team1_id or not team2_id:
             return Response(
-                {"Error": "'team1_id' and 'team2_id' are required"}, status=400
+                {"error": "'team1_id' and 'team2_id' are required"}, status=400
             )
 
-        cache_key = f"head_to_head_{team1_id}_{team2_id}_{limit}"
+        cache_key = f"head_to_head:{team1_id}:{team2_id}:{limit}"
         cached_data = cache.get(cache_key)
         if cached_data:
             return Response(cached_data)
@@ -220,13 +223,13 @@ class GameAnalyticsMixin:
 
         if not team1_id or not team2_id:
             return Response(
-                {"Error": "'team1_id' and 'team2_id' are required"}, status=400
+                {"error": "'team1_id' and 'team2_id' are required"}, status=400
             )
 
         if not season:
-            return Response({"Error": "'season' is required"}, status=400)
+            return Response({"error": "'season' is required"}, status=400)
 
-        cache_key = f"common_opponents_{team1_id}_{team2_id}_{season}"
+        cache_key = f"common_opponents:{team1_id}:{team2_id}:{season}"
         cached_data = cache.get(cache_key)
         if cached_data:
             return Response(cached_data)

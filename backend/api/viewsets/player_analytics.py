@@ -11,6 +11,8 @@ from games.models import Game
 from players.models import Player
 from stats.models import FootballPlayerGameStat
 
+from .team_analytics import _parse_int_param
+
 
 class PlayerAnalyticsMixin:
     """Analytics endpoints focused on player-level statistics."""
@@ -22,12 +24,14 @@ class PlayerAnalyticsMixin:
         Query params: 'team_id' (required), 'games' (default=3)
         """
         team_id = request.query_params.get("team_id")
-        num_games = int(request.query_params.get("games", 3))
+        num_games = _parse_int_param(request.query_params.get("games"), 3)
 
         if not team_id:
-            return Response({"Error": "'team_id' is required"}, status=400)
+            return Response({"error": "'team_id' is required"}, status=400)
+        if num_games is None:
+            return Response({"error": "'games' must be an integer"}, status=400)
 
-        cache_key = f"player_stats_{team_id}_{num_games}"
+        cache_key = f"player_stats:{team_id}:{num_games}"
         cached_data = cache.get(cache_key)
         if cached_data:
             return Response(cached_data)
@@ -132,15 +136,17 @@ class PlayerAnalyticsMixin:
         Query params: 'player_id' (required), 'games' (default=3)
         """
         player_id = request.query_params.get("player_id")
-        num_games = int(request.query_params.get("games", 3))
+        num_games = _parse_int_param(request.query_params.get("games"), 3)
 
         if not player_id:
-            return Response({"Error": "'player_id' is required"}, status=400)
+            return Response({"error": "'player_id' is required"}, status=400)
+        if num_games is None:
+            return Response({"error": "'games' must be an integer"}, status=400)
 
         try:
             player = Player.objects.select_related("team").get(id=player_id)
         except Player.DoesNotExist:
-            return Response({"Error": "Player not found"}, status=404)
+            return Response({"error": "Player not found"}, status=404)
 
         player_games = (
             Game.objects.filter(Q(home_team=player.team) | Q(away_team=player.team))
@@ -289,12 +295,14 @@ class PlayerAnalyticsMixin:
         Query params: 'player_id' (required), 'games' (default=10)
         """
         player_id = request.query_params.get("player_id")
-        num_games = int(request.query_params.get("games", 10))
+        num_games = _parse_int_param(request.query_params.get("games"), 10)
 
         if not player_id:
-            return Response({"Error": "'player_id' is required"}, status=400)
+            return Response({"error": "'player_id' is required"}, status=400)
+        if num_games is None:
+            return Response({"error": "'games' must be an integer"}, status=400)
 
-        cache_key = f"player_trend_{player_id}_{num_games}"
+        cache_key = f"player_trend:{player_id}:{num_games}"
         cached_data = cache.get(cache_key)
         if cached_data:
             return Response(cached_data)
@@ -302,7 +310,7 @@ class PlayerAnalyticsMixin:
         try:
             player = Player.objects.select_related("team").get(id=player_id)
         except Player.DoesNotExist:
-            return Response({"Error": "Player not found"}, status=404)
+            return Response({"error": "Player not found"}, status=404)
 
         games = (
             Game.objects.filter(Q(home_team=player.team) | Q(away_team=player.team))
@@ -368,9 +376,11 @@ class PlayerAnalyticsMixin:
         GET API --> Best possible fantasy roster based on average fantasy points
         Query params: 'games' (default=3)
         """
-        num_games = int(request.query_params.get("games", 3))
+        num_games = _parse_int_param(request.query_params.get("games"), 3)
+        if num_games is None:
+            return Response({"error": "'games' must be an integer"}, status=400)
 
-        cache_key = f"best_team_{num_games}"
+        cache_key = f"best_team:{num_games}"
         cached_data = cache.get(cache_key)
         if cached_data:
             return Response(cached_data)

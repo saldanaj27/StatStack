@@ -255,10 +255,11 @@ class PredictionService:
     @classmethod
     def clear_cache(cls):
         """Clear prediction cache (call after model retrain)."""
-        # Clear all prediction-related cache keys
-        # Note: This is a simple approach; for production, use cache versioning
-        cache.delete_pattern("prediction:*")
-        cache.delete_pattern("predictions:week:*")
+        if hasattr(cache, "delete_pattern"):
+            cache.delete_pattern("prediction:*")
+            cache.delete_pattern("predictions:week:*")
+        else:
+            cache.clear()
 
     @classmethod
     def reload_model(cls):

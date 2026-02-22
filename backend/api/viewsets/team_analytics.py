@@ -9,6 +9,14 @@ from games.models import Game
 from stats.models import FootballPlayerGameStat, FootballTeamGameStat
 
 
+def _parse_int_param(value, default):
+    """Parse a query param string to int, returning default on failure."""
+    try:
+        return int(value) if value is not None else default
+    except (ValueError, TypeError):
+        return None
+
+
 class TeamAnalyticsMixin:
     """Analytics endpoints focused on team-level statistics."""
 
@@ -19,17 +27,21 @@ class TeamAnalyticsMixin:
         Query params: 'team_id' (required), 'games' (default=3)
         """
         team_id = request.query_params.get("team_id")
-        num_games = int(request.query_params.get("games", 3))
+        num_games = _parse_int_param(request.query_params.get("games"), 3)
 
         if not team_id:
-            return Response({"Error": "'team_id' is required"}, status=400)
+            return Response({"error": "'team_id' is required"}, status=400)
+        if num_games is None:
+            return Response({"error": "'games' must be an integer"}, status=400)
 
-        cache_key = f"recent_stats_{team_id}_{num_games}"
+        cache_key = f"recent_stats:{team_id}:{num_games}"
         cached_data = cache.get(cache_key)
         if cached_data:
             return Response(cached_data)
 
-        query = FootballTeamGameStat.objects.filter(team_id=team_id)
+        query = FootballTeamGameStat.objects.filter(team_id=team_id).select_related(
+            "game", "game__home_team", "game__away_team"
+        )
         stats = query.order_by("-game__date")[:num_games]
 
         past_stats = stats.aggregate(
@@ -87,13 +99,15 @@ class TeamAnalyticsMixin:
         Query params: 'team_id' (required), 'games' (default=3), 'position' (default='RB')
         """
         team_id = request.query_params.get("team_id")
-        num_games = int(request.query_params.get("games", 3))
+        num_games = _parse_int_param(request.query_params.get("games"), 3)
         position = request.query_params.get("position", "RB")
 
         if not team_id:
-            return Response({"Error": "'team_id' is required"}, status=400)
+            return Response({"error": "'team_id' is required"}, status=400)
+        if num_games is None:
+            return Response({"error": "'games' must be an integer"}, status=400)
 
-        cache_key = f"defense_allowed_{team_id}_{num_games}_{position}"
+        cache_key = f"defense_allowed:{team_id}:{num_games}:{position}"
         cached_data = cache.get(cache_key)
         if cached_data:
             return Response(cached_data)
@@ -102,7 +116,7 @@ class TeamAnalyticsMixin:
         if position not in valid_positions:
             return Response(
                 {
-                    "Error": f'Invalid position. Must be one of: {", ".join(valid_positions)}'
+                    "error": f'Invalid position. Must be one of: {", ".join(valid_positions)}'
                 },
                 status=400,
             )
@@ -197,12 +211,14 @@ class TeamAnalyticsMixin:
         Query params: 'team_id' (required), 'games' (default=5)
         """
         team_id = request.query_params.get("team_id")
-        num_games = int(request.query_params.get("games", 5))
+        num_games = _parse_int_param(request.query_params.get("games"), 5)
 
         if not team_id:
-            return Response({"Error": "'team_id' is required"}, status=400)
+            return Response({"error": "'team_id' is required"}, status=400)
+        if num_games is None:
+            return Response({"error": "'games' must be an integer"}, status=400)
 
-        cache_key = f"team_game_log_{team_id}_{num_games}"
+        cache_key = f"team_game_log:{team_id}:{num_games}"
         cached_data = cache.get(cache_key)
         if cached_data:
             return Response(cached_data)
@@ -267,12 +283,14 @@ class TeamAnalyticsMixin:
         Query params: 'team_id' (required), 'games' (default=3)
         """
         team_id = request.query_params.get("team_id")
-        num_games = int(request.query_params.get("games", 3))
+        num_games = _parse_int_param(request.query_params.get("games"), 3)
 
         if not team_id:
-            return Response({"Error": "'team_id' is required"}, status=400)
+            return Response({"error": "'team_id' is required"}, status=400)
+        if num_games is None:
+            return Response({"error": "'games' must be an integer"}, status=400)
 
-        cache_key = f"usage_metrics_{team_id}_{num_games}"
+        cache_key = f"usage_metrics:{team_id}:{num_games}"
         cached_data = cache.get(cache_key)
         if cached_data:
             return Response(cached_data)
@@ -377,34 +395,47 @@ class TeamAnalyticsMixin:
         Query params: 'team_id' (required), 'games' (default=5)
         """
         team_id = request.query_params.get("team_id")
-        num_games = int(request.query_params.get("games", 5))
+        num_games = _parse_int_param(request.query_params.get("games"), 5)
 
         if not team_id:
-            return Response({"Error": "'team_id' is required"}, status=400)
+            return Response({"error": "'team_id' is required"}, status=400)
+        if num_games is None:
+            return Response({"error": "'games' must be an integer"}, status=400)
 
-        cache_key = f"usage_trends_{team_id}_{num_games}"
+        cache_key = f"usage_trends:{team_id}:{num_games}"
         cached_data = cache.get(cache_key)
         if cached_data:
             return Response(cached_data)
 
-        games = (
+        games = list(
             Game.objects.filter(Q(home_team_id=team_id) | Q(away_team_id=team_id))
             .exclude(home_score=None)
             .order_by("-date")[:num_games]
         )
 
-        per_game = []
-        for game in reversed(list(games)):
-            player_stats = FootballPlayerGameStat.objects.filter(
-                game=game, player__team_id=team_id
-            ).select_related("player")
+        # Batch: single query for all player stats across all games
+        all_player_stats = (
+            FootballPlayerGameStat.objects.filter(
+                game__in=games, player__team_id=team_id
+            )
+            .select_related("player", "game")
+        )
 
-            total_targets = sum(ps.targets for ps in player_stats)
-            total_carries = sum(ps.rush_attempts for ps in player_stats)
+        # Group stats by game
+        stats_by_game = {}
+        for ps in all_player_stats:
+            stats_by_game.setdefault(ps.game_id, []).append(ps)
+
+        per_game = []
+        for game in reversed(games):
+            game_stats = stats_by_game.get(game.id, [])
+
+            total_targets = sum(ps.targets for ps in game_stats)
+            total_carries = sum(ps.rush_attempts for ps in game_stats)
 
             target_shares = {}
             carry_shares = {}
-            for ps in player_stats:
+            for ps in game_stats:
                 if (
                     ps.player.position in ["WR", "TE"]
                     and ps.targets > 0

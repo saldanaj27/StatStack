@@ -1,0 +1,40 @@
+.git/
+.github/
+.claude/
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+env/
+venv/
+.venv/
+.pytest_cache/
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# Runtime artifacts
+*.rdb
+*.log
+celerybeat-schedule*
+
+# ML model binaries
+*.joblib
+
+# Environment files
+.env
+.env.*
+!.env.example
+!.env.prod.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation
+*.md
+!requirements.txt

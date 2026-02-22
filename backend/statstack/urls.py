@@ -16,12 +16,31 @@ Including another URLconf
 """
 
 from django.contrib import admin
+from django.db import connection
 from django.http import JsonResponse
 from django.urls import include, path
 
 
 def health_check(request):
-    return JsonResponse({"status": "ok"})
+    checks = {"database": False, "cache": False}
+    try:
+        connection.ensure_connection()
+        checks["database"] = True
+    except Exception:
+        pass
+    try:
+        from django.core.cache import cache
+
+        cache.set("healthcheck", "ok", 10)
+        checks["cache"] = cache.get("healthcheck") == "ok"
+    except Exception:
+        pass
+
+    healthy = all(checks.values())
+    return JsonResponse(
+        {"status": "ok" if healthy else "degraded", "checks": checks},
+        status=200 if healthy else 503,
+    )
 
 
 urlpatterns = [
