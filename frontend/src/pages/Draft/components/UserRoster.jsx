@@ -13,7 +13,7 @@ export default function UserRoster({ sessionId, refreshKey }) {
         setRoster(data.roster)
         setProjectedTotal(data.projected_weekly_total)
       } catch (err) {
-        console.error('Error fetching roster:', err)
+        // Logged by Axios interceptor
       } finally {
         setLoading(false)
       }

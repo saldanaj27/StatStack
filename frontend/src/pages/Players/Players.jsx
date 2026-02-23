@@ -26,7 +26,7 @@ export default function Players() {
         )
         setTeams(sortedTeams)
       } catch (error) {
-        console.error('Error loading teams:', error)
+        // Logged by Axios interceptor
       }
     }
     loadTeams()
@@ -44,7 +44,6 @@ export default function Players() {
       })
       setPlayers(data.players)
     } catch (error) {
-      console.error('Error searching players:', error)
       setPlayers([])
     } finally {
       setLoading(false)

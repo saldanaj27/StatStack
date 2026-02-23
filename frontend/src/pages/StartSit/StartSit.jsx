@@ -37,7 +37,7 @@ export default function StartSit() {
         const data = await searchPlayers({ search: debouncedSearch1, limit: 10 })
         if (!cancelled) setResults1(data.players)
       } catch (error) {
-        if (!cancelled) console.error('Search error:', error)
+        // Logged by Axios interceptor
       }
     }
     fetchResults()
@@ -56,7 +56,7 @@ export default function StartSit() {
         const data = await searchPlayers({ search: debouncedSearch2, limit: 10 })
         if (!cancelled) setResults2(data.players)
       } catch (error) {
-        if (!cancelled) console.error('Search error:', error)
+        // Logged by Axios interceptor
       }
     }
     fetchResults()
@@ -71,7 +71,7 @@ export default function StartSit() {
       const data = await getPlayerComparison(player1.id, numGames)
       setPlayer1Data(data)
     } catch (error) {
-      console.error('Error fetching player 1 data:', error)
+      // Logged by Axios interceptor
     } finally {
       setLoading1(false)
     }
@@ -85,7 +85,7 @@ export default function StartSit() {
       const data = await getPlayerComparison(player2.id, numGames)
       setPlayer2Data(data)
     } catch (error) {
-      console.error('Error fetching player 2 data:', error)
+      // Logged by Axios interceptor
     } finally {
       setLoading2(false)
     }
@@ -389,13 +389,13 @@ export default function StartSit() {
           ) : player1Data ? (
             <>
               {renderComparisonCard(player1Data, false, 1)}
-              <div className="empty-comparison" style={{ gridColumn: 'span 1' }}>
+              <div className="empty-comparison single">
                 <div className="empty-text">Select Player 2 to compare</div>
               </div>
             </>
           ) : player2Data ? (
             <>
-              <div className="empty-comparison" style={{ gridColumn: 'span 1' }}>
+              <div className="empty-comparison single">
                 <div className="empty-text">Select Player 1 to compare</div>
               </div>
               {renderComparisonCard(player2Data, false, 2)}

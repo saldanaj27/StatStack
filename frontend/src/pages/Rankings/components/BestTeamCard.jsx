@@ -26,7 +26,7 @@ export default function BestTeamCard({ numGames }) {
         const result = await getBestTeam(numGames)
         setData(result)
       } catch (error) {
-        console.error('Error fetching best team:', error)
+        // Logged by Axios interceptor
       } finally {
         setLoading(false)
       }

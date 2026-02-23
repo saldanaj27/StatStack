@@ -21,7 +21,7 @@ export default function Landing() {
           setUpcomingGames(upcoming)
         }
       } catch (err) {
-        console.error('Failed to fetch current week games:', err)
+        // Logged by Axios interceptor
       }
     }
     fetchData()

@@ -75,7 +75,6 @@ export default function Scores() {
         setWeek(1)
         setLoading(false)
       } catch (err) {
-        console.error('Failed to initialize week:', err)
         setError('Failed to load games. Please try again.')
         setWeek(1)
         setLoading(false)
@@ -104,7 +103,6 @@ export default function Scores() {
       setGames(sortedGames)
       setLoading(false)
     } catch (err) {
-      console.error('Failed to load games:', err)
       setError('Failed to load games. Please try again.')
       setGames([])
       setLoading(false)

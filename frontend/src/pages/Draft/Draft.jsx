@@ -37,7 +37,7 @@ export default function Draft() {
       }))
       setRefreshKey(k => k + 1)
     } catch (err) {
-      console.error('Error making pick:', err)
+      // Logged by Axios interceptor
     } finally {
       setPicking(false)
     }

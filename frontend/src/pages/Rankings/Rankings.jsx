@@ -28,7 +28,6 @@ export default function Rankings() {
         setPlayers(data.players)
         setCurrentPage(1)
       } catch (error) {
-        console.error('Error fetching rankings:', error)
         setPlayers([])
       } finally {
         setLoading(false)

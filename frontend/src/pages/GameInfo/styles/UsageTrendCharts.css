@@ -33,3 +33,8 @@
   color: var(--text-primary);
   margin-bottom: 0.25rem;
 }
+
+.usage-trend-tooltip-entry {
+  margin: 0;
+  font-size: 0.75rem;
+}

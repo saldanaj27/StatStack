@@ -17,7 +17,6 @@ export default function BoxScore({ gameId }) {
         setBoxScore(data)
       } catch (err) {
         setError('Unable to load box score')
-        console.error('Error fetching box score:', err)
       } finally {
         setLoading(false)
       }

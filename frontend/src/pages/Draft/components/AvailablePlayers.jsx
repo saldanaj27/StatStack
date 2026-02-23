@@ -18,7 +18,7 @@ export default function AvailablePlayers({ sessionId, onPick, disabled, refreshK
       })
       setPlayers(data.players)
     } catch (err) {
-      console.error('Error fetching available players:', err)
+      // Logged by Axios interceptor
     } finally {
       setLoading(false)
     }

@@ -36,7 +36,7 @@ export default function TeamStatsSection({ team, numGames }) {
         setQbStats(qbData)
         setGameLog(gameLogData)
       } catch (error) {
-        console.error('Error fetching team data:', error)
+        // Logged by Axios interceptor
       } finally {
         setLoading(false)
       }

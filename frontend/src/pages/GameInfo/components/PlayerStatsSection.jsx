@@ -22,7 +22,7 @@ export default function PlayerStatsSection({ team, numGames }) {
         setPlayerStats(playerData)
         setUsageMetrics(usageData)
       } catch (error) {
-        console.error('Error fetching player stats:', error)
+        // Logged by Axios interceptor
       } finally {
         setLoading(false)
       }

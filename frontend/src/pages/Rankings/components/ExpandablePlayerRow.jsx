@@ -17,7 +17,7 @@ export default function ExpandablePlayerRow({ player, rank, columns, position })
         const data = await getPlayerTrend(player.id, 10)
         setTrendData(data)
       } catch (error) {
-        console.error('Error fetching player trend:', error)
+        // Logged by Axios interceptor
       } finally {
         setLoading(false)
       }

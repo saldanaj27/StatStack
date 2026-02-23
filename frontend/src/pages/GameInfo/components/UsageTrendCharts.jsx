@@ -16,7 +16,7 @@ export default function UsageTrendCharts({ teamId, numGames }) {
         const result = await getUsageTrends(teamId, numGames)
         setData(result)
       } catch (error) {
-        console.error('Error fetching usage trends:', error)
+        // Logged by Axios interceptor
       } finally {
         setLoading(false)
       }
@@ -68,7 +68,7 @@ export default function UsageTrendCharts({ teamId, numGames }) {
         <div className="usage-trend-tooltip">
           <p className="usage-trend-tooltip-label">{label}</p>
           {payload.map((entry, i) => (
-            <p key={i} style={{ color: entry.color, margin: 0, fontSize: '0.75rem' }}>
+            <p key={i} className="usage-trend-tooltip-entry" style={{ color: entry.color }}>
               {entry.name}: {entry.value.toFixed(1)}%
             </p>
           ))}

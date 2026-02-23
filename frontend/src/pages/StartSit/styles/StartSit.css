@@ -344,6 +344,10 @@
   color: var(--text-tertiary);
 }
 
+.empty-comparison.single {
+  grid-column: span 1;
+}
+
 .empty-icon {
   font-size: 3rem;
   margin-bottom: 1rem;

@@ -14,7 +14,7 @@ export default function CommonOpponents({ team1, team2, season }) {
         const result = await getCommonOpponents(team1.id, team2.id, season)
         setData(result)
       } catch (error) {
-        console.error('Error fetching common opponents:', error)
+        // Logged by Axios interceptor
       } finally {
         setLoading(false)
       }
