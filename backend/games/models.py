@@ -13,10 +13,10 @@ class Game(models.Model):
     time = models.CharField(max_length=10, default="00:00")
 
     home_team = models.ForeignKey(
-        Team, on_delete=models.CASCADE, related_name="home_team"
+        Team, on_delete=models.CASCADE, related_name="home_games"
     )
     away_team = models.ForeignKey(
-        Team, on_delete=models.CASCADE, related_name="away_team"
+        Team, on_delete=models.CASCADE, related_name="away_games"
     )
 
     stage = models.CharField(max_length=20, choices=STAGE_CHOICES, default="REG")
@@ -30,6 +30,12 @@ class Game(models.Model):
     roof = models.CharField(max_length=15, default="outdoors")
     temp = models.IntegerField(default=0, null=True)
     wind = models.IntegerField(default=0, null=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["season", "week"]),
+            models.Index(fields=["date"]),
+        ]
 
     def __str__(self):
         return f"{self.away_team} @ {self.home_team} - Week {self.week}"

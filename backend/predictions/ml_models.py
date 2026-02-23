@@ -45,7 +45,7 @@ import joblib
 import numpy as np
 from sklearn.ensemble import GradientBoostingRegressor, RandomForestClassifier
 from sklearn.linear_model import Ridge
-from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import TimeSeriesSplit, cross_val_score
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
@@ -159,11 +159,15 @@ class GamePredictionModel:
         """
         print(f"Training on {len(X)} samples with {X.shape[1]} features...")
 
+        # Use TimeSeriesSplit to respect temporal ordering of sports data
+        # (prevents training on 2024 games to predict 2022)
+        tscv = TimeSeriesSplit(n_splits=5)
+
         # Train winner prediction model
         print("Training winner prediction model (RandomForest)...")
         self.winner_model.fit(X, y_winner)
         winner_cv_scores = cross_val_score(
-            self.winner_model, X, y_winner, cv=5, scoring="accuracy"
+            self.winner_model, X, y_winner, cv=tscv, scoring="accuracy"
         )
 
         # Train spread prediction model
@@ -171,14 +175,14 @@ class GamePredictionModel:
         self.spread_model.fit(X, y_spread)
         # neg_mean_absolute_error because sklearn maximizes scores
         spread_cv_scores = -cross_val_score(
-            self.spread_model, X, y_spread, cv=5, scoring="neg_mean_absolute_error"
+            self.spread_model, X, y_spread, cv=tscv, scoring="neg_mean_absolute_error"
         )
 
         # Train total points prediction model
         print("Training total points prediction model (Ridge)...")
         self.total_model.fit(X, y_total)
         total_cv_scores = -cross_val_score(
-            self.total_model, X, y_total, cv=5, scoring="neg_mean_absolute_error"
+            self.total_model, X, y_total, cv=tscv, scoring="neg_mean_absolute_error"
         )
 
         self.is_trained = True

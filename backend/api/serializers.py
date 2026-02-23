@@ -1,9 +1,41 @@
-from django.db.models import Q
+from collections import defaultdict
+
 from rest_framework import serializers
 
 from games.models import Game
 from players.models import Player
 from teams.models import Team
+
+
+def _build_records(season, simulation_week=None):
+    """Build W-L records for all teams in a season with a single query."""
+    games = Game.objects.filter(
+        season=season,
+        home_score__isnull=False,
+        away_score__isnull=False,
+    )
+    if simulation_week is not None:
+        games = games.filter(week__lt=simulation_week)
+
+    records = defaultdict(lambda: [0, 0, 0])  # [wins, losses, ties]
+    for game in games.values_list(
+        "home_team_id", "away_team_id", "home_score", "away_score"
+    ):
+        home_id, away_id, home_score, away_score = game
+        if home_score > away_score:
+            records[home_id][0] += 1
+            records[away_id][1] += 1
+        elif away_score > home_score:
+            records[away_id][0] += 1
+            records[home_id][1] += 1
+        else:
+            records[home_id][2] += 1
+            records[away_id][2] += 1
+
+    return {
+        tid: f"{w}-{l}-{t}" if t > 0 else f"{w}-{l}"
+        for tid, (w, l, t) in records.items()
+    }
 
 
 class TeamSerializer(serializers.ModelSerializer):
@@ -20,50 +52,20 @@ class TeamWithRecordSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "abbreviation", "city", "logo_url", "record"]
 
     def get_record(self, obj):
-        # Get the current season from context or default to latest
+        # Use pre-computed records from context if available (avoids N+1)
+        records = self.context.get("team_records")
+        if records is not None:
+            return records.get(obj.id, "0-0")
+
+        # Fallback: compute individually (for single-team serialization)
         season = self.context.get("season")
         if not season:
             latest_game = Game.objects.order_by("-season").first()
             season = latest_game.season if latest_game else 2024
 
-        # Get all completed games for this team in the season
-        completed_games = Game.objects.filter(
-            Q(home_team=obj) | Q(away_team=obj),
-            season=season,
-            home_score__isnull=False,
-            away_score__isnull=False,
-        )
-
-        # In simulation mode, only count games before the simulated week
         simulation_week = self.context.get("simulation_week")
-        if simulation_week is not None:
-            completed_games = completed_games.filter(week__lt=simulation_week)
-
-        wins = 0
-        losses = 0
-        ties = 0
-
-        for game in completed_games:
-            if game.home_team_id == obj.id:
-                # Team is home
-                if game.home_score > game.away_score:
-                    wins += 1
-                elif game.home_score < game.away_score:
-                    losses += 1
-                else:
-                    ties += 1
-            else:
-                # Team is away
-                if game.away_score > game.home_score:
-                    wins += 1
-                elif game.away_score < game.home_score:
-                    losses += 1
-                else:
-                    ties += 1
-
-        if ties > 0:
-            return f"{wins}-{losses}-{ties}"
-        return f"{wins}-{losses}"
+        records = _build_records(season, simulation_week)
+        return records.get(obj.id, "0-0")
 
 
 class PlayerSerializer(serializers.ModelSerializer):
@@ -94,11 +96,21 @@ class GameSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def to_representation(self, instance):
-        # Pass season context to nested team serializers
-        self.fields["home_team"].context["season"] = instance.season
-        self.fields["away_team"].context["season"] = instance.season
-        # Pass simulation context to nested team serializers
+        season = instance.season
         simulation_week = self.context.get("simulation_week")
+
+        # Build records once per season and cache on the serializer context
+        records_key = f"_records:{season}:{simulation_week}"
+        records = self.context.get(records_key)
+        if records is None:
+            records = _build_records(season, simulation_week)
+            self.context[records_key] = records
+
+        # Pass pre-computed records to nested team serializers (avoids N+1)
+        self.fields["home_team"].context["team_records"] = records
+        self.fields["away_team"].context["team_records"] = records
+        self.fields["home_team"].context["season"] = season
+        self.fields["away_team"].context["season"] = season
         if simulation_week is not None:
             self.fields["home_team"].context["simulation_week"] = simulation_week
             self.fields["away_team"].context["simulation_week"] = simulation_week

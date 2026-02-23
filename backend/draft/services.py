@@ -25,12 +25,11 @@ class DraftAI:
             position__in=["QB", "RB", "WR", "TE"],
         ).exclude(id__in=drafted_ids)
 
-        # Annotate with avg fantasy points
-        # Note: related_name on FootballPlayerGameStat.player is 'player_id'
+        # Annotate with avg fantasy points via reverse relation
         players = (
             players.annotate(
-                avg_fpts=Avg("player_id__fantasy_points_ppr"),
-                games_played=Count("player_id"),
+                avg_fpts=Avg("game_stats__fantasy_points_ppr"),
+                games_played=Count("game_stats"),
             )
             .filter(games_played__gte=1)
             .order_by("-avg_fpts")

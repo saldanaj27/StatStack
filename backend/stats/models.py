@@ -7,10 +7,10 @@ from teams.models import Team
 
 class FootballPlayerGameStat(models.Model):
     player = models.ForeignKey(
-        Player, on_delete=models.CASCADE, related_name="player_id"
+        Player, on_delete=models.CASCADE, related_name="game_stats"
     )
     game = models.ForeignKey(
-        Game, on_delete=models.CASCADE, related_name="player_game_id"
+        Game, on_delete=models.CASCADE, related_name="player_stats"
     )
 
     rush_attempts = models.PositiveIntegerField(default=0)
@@ -50,6 +50,9 @@ class FootballPlayerGameStat(models.Model):
     air_yards = models.FloatField(default=0.0)  # Total air yards on targets
     yards_after_catch = models.FloatField(default=0.0)
 
+    class Meta:
+        unique_together = [("player", "game")]
+
     @property
     def adot(self):
         """Average Depth of Target"""
@@ -57,17 +60,13 @@ class FootballPlayerGameStat(models.Model):
             return self.air_yards / self.targets
         return 0.0
 
-    # completion_pct @property
-
     def __str__(self):
         return f"{self.player} - {self.game}"
 
 
 class FootballTeamGameStat(models.Model):
-    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="team_id")
-    game = models.ForeignKey(
-        Game, on_delete=models.CASCADE, related_name="team_game_id"
-    )
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="game_stats")
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name="team_stats")
 
     pass_attempts = models.PositiveIntegerField(default=0)
     pass_completions = models.PositiveIntegerField(default=0)
@@ -100,6 +99,9 @@ class FootballTeamGameStat(models.Model):
 
     fg_attempts = models.PositiveIntegerField(default=0)
     fg_made = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        unique_together = [("team", "game")]
 
     @property
     def completion_percentage(self):
