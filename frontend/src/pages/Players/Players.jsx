@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { searchPlayers, getTeams } from '../../api/players'
+import useDebounce from '../../hooks/useDebounce'
 import PlayerCard from './components/PlayerCard'
 import './styles/Players.css'
 
@@ -13,15 +14,7 @@ export default function Players() {
   const [minFpts, setMinFpts] = useState('')
   const [maxFpts, setMaxFpts] = useState('')
 
-  // Debounce search
-  const [debouncedSearch, setDebouncedSearch] = useState('')
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(search)
-    }, 300)
-    return () => clearTimeout(timer)
-  }, [search])
+  const debouncedSearch = useDebounce(search)
 
   // Load teams for filter dropdown
   useEffect(() => {

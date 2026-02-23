@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { searchPlayers } from '../../api/players'
 import { getPlayerComparison } from '../../api/analytics'
+import useDebounce from '../../hooks/useDebounce'
 import TeamLogo from '../../components/TeamLogo/TeamLogo'
 import './styles/StartSit.css'
 
@@ -21,39 +22,46 @@ export default function StartSit() {
 
   const [numGames] = useState(3)
 
-  // Debounced search for player 1
+  const debouncedSearch1 = useDebounce(search1)
+  const debouncedSearch2 = useDebounce(search2)
+
+  // Search for player 1
   useEffect(() => {
-    if (search1.length < 2) {
+    if (debouncedSearch1.length < 2) {
       setResults1([])
       return
     }
-    const timer = setTimeout(async () => {
+    let cancelled = false
+    const fetchResults = async () => {
       try {
-        const data = await searchPlayers({ search: search1, limit: 10 })
-        setResults1(data.players)
+        const data = await searchPlayers({ search: debouncedSearch1, limit: 10 })
+        if (!cancelled) setResults1(data.players)
       } catch (error) {
-        console.error('Search error:', error)
+        if (!cancelled) console.error('Search error:', error)
       }
-    }, 300)
-    return () => clearTimeout(timer)
-  }, [search1])
+    }
+    fetchResults()
+    return () => { cancelled = true }
+  }, [debouncedSearch1])
 
-  // Debounced search for player 2
+  // Search for player 2
   useEffect(() => {
-    if (search2.length < 2) {
+    if (debouncedSearch2.length < 2) {
       setResults2([])
       return
     }
-    const timer = setTimeout(async () => {
+    let cancelled = false
+    const fetchResults = async () => {
       try {
-        const data = await searchPlayers({ search: search2, limit: 10 })
-        setResults2(data.players)
+        const data = await searchPlayers({ search: debouncedSearch2, limit: 10 })
+        if (!cancelled) setResults2(data.players)
       } catch (error) {
-        console.error('Search error:', error)
+        if (!cancelled) console.error('Search error:', error)
       }
-    }, 300)
-    return () => clearTimeout(timer)
-  }, [search2])
+    }
+    fetchResults()
+    return () => { cancelled = true }
+  }, [debouncedSearch2])
 
   // Fetch player 1 comparison data
   const fetchPlayer1Data = useCallback(async () => {
@@ -272,7 +280,10 @@ export default function StartSit() {
                     <div
                       key={p.id}
                       className="search-result-item"
+                      role="button"
+                      tabIndex={0}
                       onClick={() => selectPlayer1(p)}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectPlayer1(p) } }}
                     >
                       {p.image_url ? (
                         <img src={p.image_url} alt={p.name} className="result-image" />
@@ -325,7 +336,10 @@ export default function StartSit() {
                     <div
                       key={p.id}
                       className="search-result-item"
+                      role="button"
+                      tabIndex={0}
                       onClick={() => selectPlayer2(p)}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectPlayer2(p) } }}
                     >
                       {p.image_url ? (
                         <img src={p.image_url} alt={p.name} className="result-image" />

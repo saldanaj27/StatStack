@@ -14,15 +14,23 @@ export function useSimulation() {
 
 export function SimulationProvider({ children }) {
   const [simulation, setSimulation] = useState(() => {
+    const DEFAULT = { active: false, season: null, week: null }
     const saved = localStorage.getItem('statstack-simulation')
     if (saved) {
       try {
-        return JSON.parse(saved)
+        const parsed = JSON.parse(saved)
+        if (
+          parsed &&
+          typeof parsed === 'object' &&
+          typeof parsed.active === 'boolean'
+        ) {
+          return { active: parsed.active, season: parsed.season ?? null, week: parsed.week ?? null }
+        }
       } catch {
-        return { active: false, season: null, week: null }
+        // corrupted localStorage — fall through to default
       }
     }
-    return { active: false, season: null, week: null }
+    return DEFAULT
   })
 
   // Sync simulation state to Axios interceptor

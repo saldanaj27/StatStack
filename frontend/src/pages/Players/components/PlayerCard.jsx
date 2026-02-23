@@ -1,13 +1,14 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, memo } from 'react'
 import { getPlayerTrend } from '../../../api/analytics'
 import Sparkline from '../../../components/Sparkline/Sparkline'
 import TrendBadge from '../../../components/TrendBadge/TrendBadge'
 import "../styles/PlayerCard.css"
 
-export default function PlayerCard({ player }) {
+const PlayerCard = memo(function PlayerCard({ player }) {
   const { name, position, team, image_url, stats } = player
   const [trendData, setTrendData] = useState(null)
   const [visible, setVisible] = useState(false)
+  const [imgError, setImgError] = useState(false)
   const ref = useRef(null)
 
   // Lazy-load trend data when card enters viewport
@@ -117,23 +118,18 @@ export default function PlayerCard({ player }) {
   return (
     <div className="player-card" ref={ref}>
       <div className="player-card-header">
-        {image_url ? (
+        {image_url && !imgError ? (
           <img
             src={image_url}
             alt={name}
             className="player-image"
-            onError={(e) => {
-              e.target.style.display = 'none'
-              e.target.nextSibling.style.display = 'flex'
-            }}
+            onError={() => setImgError(true)}
           />
-        ) : null}
-        <div
-          className="player-image-placeholder"
-          style={{ display: image_url ? 'none' : 'flex' }}
-        >
-          {getInitials(name)}
-        </div>
+        ) : (
+          <div className="player-image-placeholder">
+            {getInitials(name)}
+          </div>
+        )}
 
         <div className="player-info">
           <h3 className="player-name">{name}</h3>
@@ -167,4 +163,6 @@ export default function PlayerCard({ player }) {
       )}
     </div>
   )
-}
+})
+
+export default PlayerCard

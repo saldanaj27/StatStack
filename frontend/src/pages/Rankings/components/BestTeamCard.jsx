@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { getBestTeam } from '../../../api/analytics'
 import './BestTeamCard.css'
 
@@ -13,6 +13,11 @@ const SLOT_LABELS = [
 export default function BestTeamCard({ numGames }) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [failedImages, setFailedImages] = useState(new Set())
+
+  const handleImgError = useCallback((url) => {
+    setFailedImages(prev => new Set(prev).add(url))
+  }, [])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,8 +52,8 @@ export default function BestTeamCard({ numGames }) {
             <div key={`${slot.key}-${i}`} className="roster-slot">
               <span className={`slot-label ${slot.key.toLowerCase()}`}>{slot.label}</span>
               <div className="slot-player">
-                {player.image_url && (
-                  <img src={player.image_url} alt={player.name} className="slot-image" onError={(e) => { e.target.style.display = 'none' }} />
+                {player.image_url && !failedImages.has(player.image_url) && (
+                  <img src={player.image_url} alt={player.name} className="slot-image" onError={() => handleImgError(player.image_url)} />
                 )}
                 <div className="slot-info">
                   <span className="slot-name">{player.name}</span>

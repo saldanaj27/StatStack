@@ -1,17 +1,13 @@
 import { useState, useEffect, useCallback } from 'react'
 import { getAvailablePlayers } from '../../../api/draft'
+import useDebounce from '../../../hooks/useDebounce'
 
 export default function AvailablePlayers({ sessionId, onPick, disabled, refreshKey }) {
   const [players, setPlayers] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [position, setPosition] = useState('')
-  const [debouncedSearch, setDebouncedSearch] = useState('')
-
-  useEffect(() => {
-    const timer = setTimeout(() => setDebouncedSearch(search), 300)
-    return () => clearTimeout(timer)
-  }, [search])
+  const debouncedSearch = useDebounce(search)
 
   const fetchPlayers = useCallback(async () => {
     setLoading(true)

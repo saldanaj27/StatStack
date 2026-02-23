@@ -32,7 +32,7 @@ export default function GameBox({ game }) {
   }
 
   return (
-    <div className="gamebox" onClick={handleClick} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick() } }}>
+    <div className="gamebox" onClick={handleClick} role="button" tabIndex={0} aria-label={`${game.away_team.abbreviation} at ${game.home_team.abbreviation}, ${isFinished ? `Final ${game.away_score}-${game.home_score}` : 'upcoming'}`} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick() } }}>
       {/* Header */}
       <div className="gamebox-header">
         <span className={`game-status ${isSimulated ? 'simulated' : isFinished ? 'final' : 'upcoming'}`}>

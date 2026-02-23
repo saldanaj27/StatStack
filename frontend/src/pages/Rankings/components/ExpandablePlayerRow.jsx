@@ -8,6 +8,7 @@ export default function ExpandablePlayerRow({ player, rank, columns, position })
   const [expanded, setExpanded] = useState(false)
   const [trendData, setTrendData] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [imgError, setImgError] = useState(false)
 
   const handleClick = async () => {
     if (!expanded && !trendData) {
@@ -30,27 +31,22 @@ export default function ExpandablePlayerRow({ player, rank, columns, position })
 
   return (
     <>
-      <tr className={`expandable-row ${expanded ? 'expanded' : ''}`} onClick={handleClick}>
+      <tr className={`expandable-row ${expanded ? 'expanded' : ''}`} onClick={handleClick} tabIndex={0} aria-label={`${player.name}, ${player.position}, ${player.stats.avg_fantasy_points.toFixed(1)} FPTS/G`} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick() } }}>
         <td className="rank-cell">{rank}</td>
         <td>
           <div className="player-cell">
-            {player.image_url ? (
+            {player.image_url && !imgError ? (
               <img
                 src={player.image_url}
                 alt={player.name}
                 className="player-image"
-                onError={(e) => {
-                  e.target.style.display = 'none'
-                  e.target.nextSibling.style.display = 'flex'
-                }}
+                onError={() => setImgError(true)}
               />
-            ) : null}
-            <div
-              className="player-image-placeholder"
-              style={{ display: player.image_url ? 'none' : 'flex' }}
-            >
-              {getInitials(player.name)}
-            </div>
+            ) : (
+              <div className="player-image-placeholder">
+                {getInitials(player.name)}
+              </div>
+            )}
             <div className="player-info">
               <span className="player-name">{player.name}</span>
               <span className="player-team">

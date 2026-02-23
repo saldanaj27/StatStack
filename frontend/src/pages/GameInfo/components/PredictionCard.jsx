@@ -19,11 +19,13 @@ export default function PredictionCard({ gameId, homeTeam, awayTeam }) {
   const [error, setError] = useState(null)
 
   useEffect(() => {
+    let cancelled = false
     const fetchPrediction = async () => {
       setLoading(true)
       setError(null)
 
       const data = await getGamePrediction(gameId)
+      if (cancelled) return
 
       if (data && data.prediction) {
         setPrediction(data)
@@ -37,6 +39,7 @@ export default function PredictionCard({ gameId, homeTeam, awayTeam }) {
     }
 
     fetchPrediction()
+    return () => { cancelled = true }
   }, [gameId])
 
   if (loading) {
