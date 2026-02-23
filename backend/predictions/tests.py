@@ -131,8 +131,7 @@ class PredictionServiceTests(TestCase):
 
     def test_predict_completed_game_raises(self):
         game = create_game(
-            2025, 1, self.team1, self.team2, day_offset=-7,
-            home_score=28, away_score=21
+            2025, 1, self.team1, self.team2, day_offset=-7, home_score=28, away_score=21
         )
         PredictionModelVersion.objects.create(
             version="v1-test", is_active=True, training_seasons=[2023]
@@ -177,9 +176,13 @@ class FeatureExtractorTests(TestCase):
         # Create 4 completed games so team1 and team2 have enough history
         for i in range(4):
             game = create_game(
-                2025, i + 1, cls.team1, cls.team2,
+                2025,
+                i + 1,
+                cls.team1,
+                cls.team2,
                 day_offset=-(30 - i * 7),
-                home_score=24 + i, away_score=21 - i,
+                home_score=24 + i,
+                away_score=21 - i,
             )
             create_team_stats(cls.team1, game)
             create_team_stats(cls.team2, game)
@@ -192,22 +195,35 @@ class FeatureExtractorTests(TestCase):
 
     def test_offensive_features_returns_dict(self):
         extractor = FeatureExtractor(num_games=5)
-        features = extractor.extract_team_offensive_features(self.team1.id, date.today())
+        features = extractor.extract_team_offensive_features(
+            self.team1.id, date.today()
+        )
         expected_keys = [
-            "off_pass_yards", "off_pass_tds", "off_completion_pct",
-            "off_rush_yards", "off_rush_tds", "off_total_yards",
-            "off_points_scored", "off_turnovers",
+            "off_pass_yards",
+            "off_pass_tds",
+            "off_completion_pct",
+            "off_rush_yards",
+            "off_rush_tds",
+            "off_total_yards",
+            "off_points_scored",
+            "off_turnovers",
         ]
         for key in expected_keys:
             self.assertIn(key, features)
 
     def test_defensive_features_returns_dict(self):
         extractor = FeatureExtractor(num_games=5)
-        features = extractor.extract_team_defensive_features(self.team1.id, date.today())
+        features = extractor.extract_team_defensive_features(
+            self.team1.id, date.today()
+        )
         expected_keys = [
-            "def_pass_yards_allowed", "def_rush_yards_allowed",
-            "def_total_yards_allowed", "def_points_allowed",
-            "def_sacks", "def_interceptions", "def_turnovers_forced",
+            "def_pass_yards_allowed",
+            "def_rush_yards_allowed",
+            "def_total_yards_allowed",
+            "def_points_allowed",
+            "def_sacks",
+            "def_interceptions",
+            "def_turnovers_forced",
         ]
         for key in expected_keys:
             self.assertIn(key, features)
@@ -235,9 +251,11 @@ class FeatureExtractorTests(TestCase):
     def test_build_game_features_shape(self):
         """Feature vector should have 44 features (22 per team)."""
         # Use the latest game so there are 3+ prior games for both teams
-        game = Game.objects.filter(
-            home_team=self.team1, home_score__isnull=False
-        ).order_by("-date").first()
+        game = (
+            Game.objects.filter(home_team=self.team1, home_score__isnull=False)
+            .order_by("-date")
+            .first()
+        )
         extractor = FeatureExtractor(num_games=3)
         features = extractor.build_game_features(game)
         self.assertEqual(len(features), 44)
@@ -278,9 +296,7 @@ class PredictionModelVersionTests(TestCase):
         self.assertTrue(v2.is_active)
 
     def test_str_representation(self):
-        v = PredictionModelVersion(
-            version="v1", is_active=True, winner_accuracy=0.65
-        )
+        v = PredictionModelVersion(version="v1", is_active=True, winner_accuracy=0.65)
         self.assertIn("v1", str(v))
         self.assertIn("active", str(v))
         self.assertIn("65.0%", str(v))

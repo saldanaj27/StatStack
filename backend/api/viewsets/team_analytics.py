@@ -414,12 +414,9 @@ class TeamAnalyticsMixin:
         )
 
         # Batch: single query for all player stats across all games
-        all_player_stats = (
-            FootballPlayerGameStat.objects.filter(
-                game__in=games, player__team_id=team_id
-            )
-            .select_related("player", "game")
-        )
+        all_player_stats = FootballPlayerGameStat.objects.filter(
+            game__in=games, player__team_id=team_id
+        ).select_related("player", "game")
 
         # Group stats by game
         stats_by_game = {}
