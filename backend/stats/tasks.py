@@ -5,8 +5,8 @@ from celery import shared_task
 from django.core.cache import cache
 from django.core.management import call_command
 
-from api.cache_utils import invalidate_team_cache
 from games.models import Game
+from stats.cache_utils import invalidate_team_cache
 
 logger = logging.getLogger(__name__)
 

@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 
-from api.simulation import SimulationMixin
+from games.simulation import SimulationMixin
 
 from .game_analytics import GameAnalyticsMixin
 from .player_analytics import PlayerAnalyticsMixin

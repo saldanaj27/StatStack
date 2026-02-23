@@ -4,8 +4,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from api.serializers import GameSerializer
-from api.simulation import SimulationMixin
 from games.models import Game
+from games.simulation import SimulationMixin
 
 
 class GameViewSet(SimulationMixin, viewsets.ModelViewSet):
