@@ -152,3 +152,125 @@ export const mockBoxScore = {
     top_performers: [],
   },
 }
+
+// Mock player comparison data (used by StartSit)
+export const mockPlayerComparison = {
+  player: {
+    id: '00-0033873',
+    name: 'Patrick Mahomes',
+    position: 'QB',
+    team: 'KC',
+    team_name: 'Kansas City Chiefs',
+    image_url: null,
+  },
+  stats: {
+    avg_fantasy_points: 24.5,
+    avg_pass_yards: 298.3,
+    avg_pass_tds: 2.3,
+    avg_rush_yards: 18.5,
+    avg_targets: 0,
+    avg_receiving_yards: 0,
+    avg_snap_pct: 100,
+    adot: 0,
+  },
+  matchup: {
+    opponent: 'BUF',
+    opponent_logo_url: null,
+    is_home: true,
+    game_date: '2025-11-02',
+  },
+  opponent_defense: {
+    fantasy_pts_allowed: 22.1,
+    yards_allowed: 310,
+    tds_allowed: 2.1,
+  },
+}
+
+export const mockPlayerComparison2 = {
+  player: {
+    id: '00-0036389',
+    name: 'Josh Allen',
+    position: 'QB',
+    team: 'BUF',
+    team_name: 'Buffalo Bills',
+    image_url: null,
+  },
+  stats: {
+    avg_fantasy_points: 22.8,
+    avg_pass_yards: 275.0,
+    avg_pass_tds: 2.0,
+    avg_rush_yards: 35.2,
+    avg_targets: 0,
+    avg_receiving_yards: 0,
+    avg_snap_pct: 100,
+    adot: 0,
+  },
+  matchup: {
+    opponent: 'KC',
+    opponent_logo_url: null,
+    is_home: false,
+    game_date: '2025-11-02',
+  },
+  opponent_defense: {
+    fantasy_pts_allowed: 18.3,
+    yards_allowed: 280,
+    tds_allowed: 1.8,
+  },
+}
+
+// Mock prediction data
+export const mockPrediction = {
+  game_id: '2025_10_KC_BUF',
+  prediction: {
+    home_win_probability: 0.62,
+    predicted_winner: 'home',
+    predicted_spread: 3.5,
+    predicted_total: 51.5,
+    predicted_home_score: 27.5,
+    predicted_away_score: 24.0,
+    confidence: 'medium',
+  },
+  model_version: 'v20260206_013321',
+}
+
+// Mock head-to-head data
+export const mockHeadToHead = {
+  series_record: { team1_wins: 3, team2_wins: 1, ties: 0 },
+  matchups: [
+    {
+      game_id: '2024_06_SF_KC',
+      season: 2024,
+      week: 6,
+      team1_score: 28,
+      team2_score: 18,
+      team1_total_yards: 390,
+      team2_total_yards: 310,
+    },
+    {
+      game_id: '2023_SB_SF_KC',
+      season: 2023,
+      week: 22,
+      team1_score: 22,
+      team2_score: 25,
+      team1_total_yards: 350,
+      team2_total_yards: 370,
+    },
+  ],
+}
+
+// Mock common opponents data
+export const mockCommonOpponents = {
+  common_opponents: [
+    {
+      opponent_abbreviation: 'LV',
+      opponent_logo_url: null,
+      team1_results: [
+        { week: 3, score: 34, opp_score: 17 },
+      ],
+      team2_results: [
+        { week: 7, score: 21, opp_score: 28 },
+      ],
+    },
+  ],
+}
+

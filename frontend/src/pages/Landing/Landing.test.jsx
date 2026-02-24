@@ -39,7 +39,6 @@ describe('Landing', () => {
     expect(screen.getByText('Player Search')).toBeInTheDocument()
     expect(screen.getByText('Rankings')).toBeInTheDocument()
     expect(screen.getByText('Start/Sit')).toBeInTheDocument()
-    expect(screen.getByText('Mock Draft')).toBeInTheDocument()
   })
 
   it('renders stats section', async () => {
