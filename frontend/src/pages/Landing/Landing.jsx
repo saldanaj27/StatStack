@@ -52,12 +52,6 @@ export default function Landing() {
       title: 'Start/Sit',
       description: 'Compare players head-to-head to make lineup decisions',
     },
-    {
-      to: '/draft',
-      icon: '📋',
-      title: 'Mock Draft',
-      description: 'Simulate a fantasy draft against AI opponents with snake draft order',
-    },
   ]
 
   return (

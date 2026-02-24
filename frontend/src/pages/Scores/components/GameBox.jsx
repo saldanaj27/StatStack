@@ -4,8 +4,7 @@ import TeamLogo from '../../../components/TeamLogo/TeamLogo'
 
 export default function GameBox({ game }) {
   const navigate = useNavigate()
-  const isSimulated = game._simulation_masked === true
-  const isFinished = game.home_score !== null && !isSimulated
+  const isFinished = game.home_score !== null
 
   const handleClick = () => {
     navigate(`/game/${game.id}`)
@@ -35,8 +34,8 @@ export default function GameBox({ game }) {
     <div className="gamebox" onClick={handleClick} role="button" tabIndex={0} aria-label={`${game.away_team.abbreviation} at ${game.home_team.abbreviation}, ${isFinished ? `Final ${game.away_score}-${game.home_score}` : 'upcoming'}`} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick() } }}>
       {/* Header */}
       <div className="gamebox-header">
-        <span className={`game-status ${isSimulated ? 'simulated' : isFinished ? 'final' : 'upcoming'}`}>
-          {isSimulated ? 'Simulated' : isFinished ? 'Final' : formatTime(game.time)}
+        <span className={`game-status ${isFinished ? 'final' : 'upcoming'}`}>
+          {isFinished ? 'Final' : formatTime(game.time)}
         </span>
         <span className="game-time">
           {formatDate(game.date)}

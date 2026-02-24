@@ -1,5 +1,6 @@
 from datetime import date, timedelta
 
+import pytest
 from django.test import TestCase, override_settings
 from django.utils import timezone
 from rest_framework import status
@@ -524,6 +525,7 @@ class AnalyticsAPITests(BaseTestCase):
         self.assertIn("projected_weekly_total", response.data)
 
 
+@pytest.mark.skip(reason="Draft feature disabled — route removed from api/urls.py")
 class DraftAPITests(BaseTestCase):
     """Tests for Draft API endpoints"""
 

@@ -86,13 +86,12 @@ class PredictionService:
             logger.error("Error loading model: %s", e)
             return False
 
-    def predict_game(self, game_id: str, simulate: bool = False) -> dict:
+    def predict_game(self, game_id: str) -> dict:
         """
         Make a prediction for a specific game.
 
         Args:
             game_id: The game identifier (e.g., '2025_10_KC_BUF')
-            simulate: If True, skip the completed-game check (for time-travel mode)
 
         Returns:
             Prediction dictionary with:
@@ -106,8 +105,7 @@ class PredictionService:
         Raises:
             ValueError: If game not found or prediction not possible
         """
-        # Check cache first (use separate prefix for simulation)
-        cache_key = f'{"sim:" if simulate else ""}prediction:{game_id}'
+        cache_key = f"prediction:{game_id}"
         cached = cache.get(cache_key)
         if cached:
             return cached
@@ -124,8 +122,8 @@ class PredictionService:
         except Game.DoesNotExist:
             raise ValueError(f"Game not found: {game_id}")
 
-        # Check if game is already completed (skip in simulation mode)
-        if not simulate and game.home_score is not None:
+        # Check if game is already completed
+        if game.home_score is not None:
             raise ValueError(
                 f"Game {game_id} is already completed. Predictions are only for upcoming games."
             )
@@ -149,59 +147,37 @@ class PredictionService:
             "model_version": self._model_version,
         }
 
-        # Include actual results when simulating a completed game
-        if simulate and game.home_score is not None:
-            home_score = game.home_score
-            away_score = game.away_score
-            result["actual"] = {
-                "home_score": home_score,
-                "away_score": away_score,
-                # Use "home"/"away" to match predicted_winner format from ml_models.py
-                "winner": (
-                    "home"
-                    if home_score > away_score
-                    else "away" if away_score > home_score else "TIE"
-                ),
-            }
-
         # Cache for 15 minutes
         cache_ttl = settings.CACHE_TTL.get("predictions", 900)
         cache.set(cache_key, result, cache_ttl)
 
         return result
 
-    def predict_week(
-        self, season: int, week: int, simulate: bool = False
-    ) -> list[dict]:
+    def predict_week(self, season: int, week: int) -> list[dict]:
         """
         Make predictions for all games in a week.
 
         Args:
             season: Season year (e.g., 2025)
             week: Week number (1-18)
-            simulate: If True, include completed games (for time-travel mode)
 
         Returns:
             List of prediction dictionaries for each game
         """
-        # Check cache (use separate prefix for simulation)
-        cache_key = f'{"sim:" if simulate else ""}predictions:week:{season}:{week}'
+        cache_key = f"predictions:week:{season}:{week}"
         cached = cache.get(cache_key)
         if cached:
             return cached
 
-        # Get games for this week
-        games = Game.objects.filter(season=season, week=week).select_related(
-            "home_team", "away_team"
-        )
-
-        if not simulate:
-            games = games.filter(home_score__isnull=True)  # Only upcoming games
+        # Get upcoming games for this week
+        games = Game.objects.filter(
+            season=season, week=week, home_score__isnull=True
+        ).select_related("home_team", "away_team")
 
         predictions = []
         for game in games:
             try:
-                pred = self.predict_game(game.id, simulate=simulate)
+                pred = self.predict_game(game.id)
                 predictions.append(pred)
             except ValueError as e:
                 # Skip games we can't predict

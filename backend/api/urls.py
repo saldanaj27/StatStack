@@ -16,5 +16,5 @@ router.register(r"analytics", analytics.AnalyticsViewSet, basename="analytics")
 urlpatterns = [
     path("", include(router.urls)),
     path("predictions/", include("predictions.urls")),
-    path("draft/", include("draft.urls")),
+    # path("draft/", include("draft.urls")),  # Draft feature disabled — not ready
 ]

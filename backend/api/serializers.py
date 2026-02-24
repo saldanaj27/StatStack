@@ -7,15 +7,13 @@ from players.models import Player
 from teams.models import Team
 
 
-def _build_records(season, simulation_week=None):
+def _build_records(season):
     """Build W-L records for all teams in a season with a single query."""
     games = Game.objects.filter(
         season=season,
         home_score__isnull=False,
         away_score__isnull=False,
     )
-    if simulation_week is not None:
-        games = games.filter(week__lt=simulation_week)
 
     records = defaultdict(lambda: [0, 0, 0])  # [wins, losses, ties]
     for game in games.values_list(
@@ -63,8 +61,7 @@ class TeamWithRecordSerializer(serializers.ModelSerializer):
             latest_game = Game.objects.order_by("-season").first()
             season = latest_game.season if latest_game else 2024
 
-        simulation_week = self.context.get("simulation_week")
-        records = _build_records(season, simulation_week)
+        records = _build_records(season)
         return records.get(obj.id, "0-0")
 
 
@@ -87,7 +84,6 @@ class PlayerBasicSerializer(serializers.ModelSerializer):
 
 
 class GameSerializer(serializers.ModelSerializer):
-    # change fields from ID to actual objects with records
     home_team = TeamWithRecordSerializer(read_only=True)
     away_team = TeamWithRecordSerializer(read_only=True)
 
@@ -97,13 +93,12 @@ class GameSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         season = instance.season
-        simulation_week = self.context.get("simulation_week")
 
         # Build records once per season and cache on the serializer context
-        records_key = f"_records:{season}:{simulation_week}"
+        records_key = f"_records:{season}"
         records = self.context.get(records_key)
         if records is None:
-            records = _build_records(season, simulation_week)
+            records = _build_records(season)
             self.context[records_key] = records
 
         # Pass pre-computed records to nested team serializers (avoids N+1)
@@ -111,7 +106,4 @@ class GameSerializer(serializers.ModelSerializer):
         self.fields["away_team"].context["team_records"] = records
         self.fields["home_team"].context["season"] = season
         self.fields["away_team"].context["season"] = season
-        if simulation_week is not None:
-            self.fields["home_team"].context["simulation_week"] = simulation_week
-            self.fields["away_team"].context["simulation_week"] = simulation_week
         return super().to_representation(instance)

@@ -24,7 +24,6 @@ describe('NavBar', () => {
     expect(screen.getByText('Players')).toBeInTheDocument()
     expect(screen.getByText('Rankings')).toBeInTheDocument()
     expect(screen.getByText('Start/Sit')).toBeInTheDocument()
-    expect(screen.getByText('Draft')).toBeInTheDocument()
   })
 
   it('renders theme toggle button', () => {

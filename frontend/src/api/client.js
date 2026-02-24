@@ -5,25 +5,6 @@ const api = axios.create({
   timeout: 30000,
 });
 
-// Simulation state (module-level, set by SimulationContext)
-let simulationParams = null;
-
-export function setSimulationParams(params) {
-  simulationParams = params;
-}
-
-// Inject simulation params into every request when active
-api.interceptors.request.use((config) => {
-  if (simulationParams) {
-    config.params = {
-      ...config.params,
-      simulate_season: simulationParams.season,
-      simulate_week: simulationParams.week,
-    };
-  }
-  return config;
-});
-
 api.interceptors.response.use(
   (response) => response,
   (error) => {

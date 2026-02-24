@@ -32,7 +32,6 @@ class GamePredictionView(APIView):
 
     def get(self, request):
         game_id = request.query_params.get("game_id")
-        simulate = bool(request.query_params.get("simulate_season"))
 
         if not game_id:
             return Response(
@@ -42,7 +41,7 @@ class GamePredictionView(APIView):
 
         try:
             service = PredictionService.get_instance()
-            prediction = service.predict_game(game_id, simulate=simulate)
+            prediction = service.predict_game(game_id)
             return Response(prediction)
         except ValueError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -87,9 +86,8 @@ class WeekPredictionsView(APIView):
             )
 
         try:
-            simulate = bool(request.query_params.get("simulate_season"))
             service = PredictionService.get_instance()
-            predictions = service.predict_week(season, week, simulate=simulate)
+            predictions = service.predict_week(season, week)
             return Response(
                 {
                     "season": season,

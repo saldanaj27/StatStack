@@ -1,13 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import NavBar from "./components/NavBar/NavBar"
-import SimulationBanner from "./components/SimulationBanner/SimulationBanner"
 import Landing from "./pages/Landing/Landing"
 import Scores from "./pages/Scores/Scores"
 import GameInfo from "./pages/GameInfo/GameInfo"
 import Players from "./pages/Players/Players"
 import Rankings from "./pages/Rankings/Rankings"
 import StartSit from "./pages/StartSit/StartSit"
-import Draft from "./pages/Draft/Draft"
 import NotFound from "./pages/NotFound/NotFound"
 
 export default function App() {
@@ -15,7 +13,6 @@ export default function App() {
     <BrowserRouter>
       <a href="#main-content" className="skip-link">Skip to content</a>
       <NavBar />
-      <SimulationBanner />
       <main id="main-content">
         <Routes>
           <Route path="/" element={<Landing />} />
@@ -24,7 +21,6 @@ export default function App() {
           <Route path="/players" element={<Players />} />
           <Route path="/rankings" element={<Rankings />} />
           <Route path="/start-sit" element={<StartSit />} />
-          <Route path="/draft" element={<Draft />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

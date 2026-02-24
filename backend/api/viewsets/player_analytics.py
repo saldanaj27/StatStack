@@ -176,15 +176,11 @@ class PlayerAnalyticsMixin:
             avg_yac=Avg("yards_after_catch"),
         )
 
-        # Get upcoming game (use simulation cutoff if active)
-        sim = self.get_simulation_context(request)
-        if sim.is_active and sim.cutoff_date:
-            cutoff = sim.cutoff_date
-        else:
-            cutoff = timezone.now().date()
+        # Get upcoming game
+        today = timezone.now().date()
         upcoming_game = (
             Game.objects.filter(Q(home_team=player.team) | Q(away_team=player.team))
-            .filter(date__gte=cutoff)
+            .filter(date__gte=today)
             .order_by("date")
             .first()
         )
