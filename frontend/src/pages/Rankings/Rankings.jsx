@@ -27,7 +27,7 @@ export default function Rankings() {
         })
         setPlayers(data.players)
         setCurrentPage(1)
-      } catch (error) {
+      } catch (_error) {
         setPlayers([])
       } finally {
         setLoading(false)

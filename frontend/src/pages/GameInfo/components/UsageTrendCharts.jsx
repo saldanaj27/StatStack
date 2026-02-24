@@ -15,7 +15,7 @@ export default function UsageTrendCharts({ teamId, numGames }) {
       try {
         const result = await getUsageTrends(teamId, numGames)
         setData(result)
-      } catch (error) {
+      } catch (_error) {
         // Logged by Axios interceptor
       } finally {
         setLoading(false)

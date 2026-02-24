@@ -21,7 +21,7 @@ export default function PlayerStatsSection({ team, numGames }) {
         ])
         setPlayerStats(playerData)
         setUsageMetrics(usageData)
-      } catch (error) {
+      } catch (_error) {
         // Logged by Axios interceptor
       } finally {
         setLoading(false)

@@ -8,7 +8,6 @@ vi.mock('../api/client', () => ({
   setSimulationParams: vi.fn(),
 }))
 
-// eslint-disable-next-line no-unused-vars
 import { setSimulationParams } from '../api/client'
 
 // Test consumer component to access context values

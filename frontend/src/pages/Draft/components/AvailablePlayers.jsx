@@ -17,7 +17,7 @@ export default function AvailablePlayers({ sessionId, onPick, disabled, refreshK
         search: debouncedSearch || undefined,
       })
       setPlayers(data.players)
-    } catch (err) {
+    } catch (_err) {
       // Logged by Axios interceptor
     } finally {
       setLoading(false)

@@ -35,7 +35,7 @@ export default function TeamStatsSection({ team, numGames }) {
         setTeStats(teData)
         setQbStats(qbData)
         setGameLog(gameLogData)
-      } catch (error) {
+      } catch (_error) {
         // Logged by Axios interceptor
       } finally {
         setLoading(false)

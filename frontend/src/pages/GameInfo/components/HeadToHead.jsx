@@ -13,7 +13,7 @@ export default function HeadToHead({ team1, team2 }) {
       try {
         const result = await getHeadToHead(team1.id, team2.id, 5)
         setData(result)
-      } catch (error) {
+      } catch (_error) {
         // Logged by Axios interceptor
       } finally {
         setLoading(false)

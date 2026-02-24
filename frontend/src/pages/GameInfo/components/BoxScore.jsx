@@ -15,7 +15,7 @@ export default function BoxScore({ gameId }) {
       try {
         const data = await getGameBoxScore(gameId)
         setBoxScore(data)
-      } catch (err) {
+      } catch (_err) {
         setError('Unable to load box score')
       } finally {
         setLoading(false)

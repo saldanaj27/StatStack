@@ -25,7 +25,7 @@ export default function Players() {
           a.abbreviation.localeCompare(b.abbreviation)
         )
         setTeams(sortedTeams)
-      } catch (error) {
+      } catch (_error) {
         // Logged by Axios interceptor
       }
     }
@@ -43,7 +43,7 @@ export default function Players() {
         limit: 100
       })
       setPlayers(data.players)
-    } catch (error) {
+    } catch (_error) {
       setPlayers([])
     } finally {
       setLoading(false)

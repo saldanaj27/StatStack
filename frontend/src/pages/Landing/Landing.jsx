@@ -20,7 +20,7 @@ export default function Landing() {
             .slice(0, 3)
           setUpcomingGames(upcoming)
         }
-      } catch (err) {
+      } catch (_err) {
         // Logged by Axios interceptor
       }
     }

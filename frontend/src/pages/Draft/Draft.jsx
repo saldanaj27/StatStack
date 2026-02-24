@@ -36,7 +36,7 @@ export default function Draft() {
         current_round: result.current_round,
       }))
       setRefreshKey(k => k + 1)
-    } catch (err) {
+    } catch (_err) {
       // Logged by Axios interceptor
     } finally {
       setPicking(false)

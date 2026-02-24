@@ -72,7 +72,7 @@ export default function Scores() {
         // If still no games found, default to week 1
         setWeek(1)
         setLoading(false)
-      } catch (err) {
+      } catch (_err) {
         setError('Failed to load games. Please try again.')
         setWeek(1)
         setLoading(false)
@@ -99,7 +99,7 @@ export default function Scores() {
 
       setGames(sortedGames)
       setLoading(false)
-    } catch (err) {
+    } catch (_err) {
       setError('Failed to load games. Please try again.')
       setGames([])
       setLoading(false)

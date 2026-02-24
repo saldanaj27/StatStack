@@ -17,7 +17,7 @@ export default function GameInfo() {
   const [game, setGame] = useState(null)
   const [numGames, setNumGames] = useState(3)
   const [activeTab, setActiveTab] = useState('overview')
-  const [showActual, setShowActual] = useState(false) // eslint-disable-line no-unused-vars
+  const [showActual, setShowActual] = useState(false)
 
   useEffect(() => {
     const fetchGame = async () => {
@@ -35,9 +35,7 @@ export default function GameInfo() {
     )
   }
 
-  /* eslint-disable camelcase */
   const isSimulated = game._simulation_masked === true
-  /* eslint-enable camelcase */
   const isFinished = game.home_score !== null && !isSimulated
 
   return (
@@ -99,7 +97,6 @@ export default function GameInfo() {
                 </div>
 
                 {/* Reveal Actual Result toggle for simulated games */}
-                {/* eslint-disable camelcase */}
                 {isSimulated && game._actual_home_score != null && (
                   <div className="reveal-actual">
                     <button
@@ -120,8 +117,6 @@ export default function GameInfo() {
                     )}
                   </div>
                 )}
-                {/* eslint-enable camelcase */}
-
                 {/* ML Prediction for upcoming / simulated games */}
                 <PredictionCard
                   gameId={game.id}

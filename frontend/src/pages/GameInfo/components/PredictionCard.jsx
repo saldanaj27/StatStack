@@ -128,7 +128,6 @@ export default function PredictionCard({ gameId, homeTeam, awayTeam }) {
       </div>
 
       {/* Actual vs Predicted comparison (simulation mode) */}
-      {/* eslint-disable camelcase */}
       {prediction.actual && (
         <div className="prediction-actual-section">
           <h4>Actual Result</h4>
@@ -155,8 +154,6 @@ export default function PredictionCard({ gameId, homeTeam, awayTeam }) {
           </div>
         </div>
       )}
-      {/* eslint-enable camelcase */}
-
       {/* Model Info */}
       <div className="prediction-footer">
         <span className="model-info">Model: {model_version}</span>

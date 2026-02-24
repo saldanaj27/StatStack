@@ -36,7 +36,7 @@ export default function StartSit() {
       try {
         const data = await searchPlayers({ search: debouncedSearch1, limit: 10 })
         if (!cancelled) setResults1(data.players)
-      } catch (error) {
+      } catch (_error) {
         // Logged by Axios interceptor
       }
     }
@@ -55,7 +55,7 @@ export default function StartSit() {
       try {
         const data = await searchPlayers({ search: debouncedSearch2, limit: 10 })
         if (!cancelled) setResults2(data.players)
-      } catch (error) {
+      } catch (_error) {
         // Logged by Axios interceptor
       }
     }
@@ -70,7 +70,7 @@ export default function StartSit() {
     try {
       const data = await getPlayerComparison(player1.id, numGames)
       setPlayer1Data(data)
-    } catch (error) {
+    } catch (_error) {
       // Logged by Axios interceptor
     } finally {
       setLoading1(false)
@@ -84,7 +84,7 @@ export default function StartSit() {
     try {
       const data = await getPlayerComparison(player2.id, numGames)
       setPlayer2Data(data)
-    } catch (error) {
+    } catch (_error) {
       // Logged by Axios interceptor
     } finally {
       setLoading2(false)

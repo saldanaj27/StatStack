@@ -74,12 +74,10 @@ describe('PredictionCard', () => {
   })
 
   it('renders actual vs predicted when present', async () => {
-    /* eslint-disable camelcase */
     const predictionWithActual = {
       ...mockPrediction,
       actual: { home_score: 30, away_score: 20, winner: 'home' },
     }
-    /* eslint-enable camelcase */
     getGamePrediction.mockResolvedValue(predictionWithActual)
     render(<PredictionCard gameId="2025_10_KC_BUF" homeTeam="BUF" awayTeam="KC" />)
 

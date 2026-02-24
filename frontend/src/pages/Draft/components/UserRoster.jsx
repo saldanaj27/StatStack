@@ -12,7 +12,7 @@ export default function UserRoster({ sessionId, refreshKey }) {
         const data = await getUserRoster(sessionId)
         setRoster(data.roster)
         setProjectedTotal(data.projected_weekly_total)
-      } catch (err) {
+      } catch (_err) {
         // Logged by Axios interceptor
       } finally {
         setLoading(false)
