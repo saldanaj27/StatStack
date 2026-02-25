@@ -44,18 +44,8 @@
 }
 
 .game-status.upcoming {
-  background-color: rgba(var(--accent-primary), 0.1);
+  background-color: rgba(var(--accent-primary-rgb), 0.1);
   color: var(--accent-primary);
-}
-
-[data-theme="dark"] .game-status.upcoming {
-  background-color: rgba(204, 0, 0, 0.2);
-  color: #ff6b6b;
-}
-
-[data-theme="light"] .game-status.upcoming {
-  background-color: rgba(59, 130, 246, 0.1);
-  color: #3b82f6;
 }
 
 .game-status.simulated {
@@ -93,15 +83,7 @@
 }
 
 .team-row.winner {
-  background-color: rgba(var(--accent-primary), 0.05);
-}
-
-[data-theme="dark"] .team-row.winner {
-  background-color: rgba(204, 0, 0, 0.1);
-}
-
-[data-theme="light"] .team-row.winner {
-  background-color: rgba(59, 130, 246, 0.05);
+  background-color: rgba(var(--accent-primary-rgb), 0.05);
 }
 
 .team-abbr {

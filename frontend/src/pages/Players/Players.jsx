@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import { searchPlayers, getTeams } from '../../api/players'
 import useDebounce from '../../hooks/useDebounce'
 import PlayerCard from './components/PlayerCard'
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner'
+import EmptyState from '../../components/EmptyState/EmptyState'
 import './styles/Players.css'
 
 export default function Players() {
@@ -145,9 +147,7 @@ export default function Players() {
 
         {/* Players Grid */}
         {loading ? (
-          <div className="loading-container">
-            <div className="loading-spinner"></div>
-          </div>
+          <LoadingSpinner />
         ) : filteredPlayers.length > 0 ? (
           <div className="players-grid">
             {filteredPlayers.map((player) => (
@@ -155,13 +155,7 @@ export default function Players() {
             ))}
           </div>
         ) : (
-          <div className="empty-state">
-            <div className="empty-state-icon">🏈</div>
-            <div className="empty-state-text">No players found</div>
-            <div className="empty-state-subtext">
-              Try adjusting your search or filters
-            </div>
-          </div>
+          <EmptyState icon="🏈" message="No players found" submessage="Try adjusting your search or filters" />
         )}
       </div>
     </div>

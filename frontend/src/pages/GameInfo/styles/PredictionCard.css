@@ -1,12 +1,12 @@
 /* PredictionCard.css - ML Prediction Display */
 
 .prediction-card {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  border-radius: 12px;
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius-lg);
   padding: 1.5rem;
   margin-top: 1.5rem;
-  border: 1px solid #2a2a4a;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-md);
 }
 
 .prediction-card.loading {
@@ -17,7 +17,7 @@
 }
 
 .prediction-loading {
-  color: #888;
+  color: var(--text-tertiary);
   font-style: italic;
 }
 
@@ -28,14 +28,14 @@
   align-items: center;
   margin-bottom: 1.25rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid #2a2a4a;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .prediction-title {
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #e0e0e0;
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -88,7 +88,7 @@
 
 .probability-title {
   font-size: 0.8rem;
-  color: #888;
+  color: var(--text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -99,11 +99,11 @@
 }
 
 .team-label.away {
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
 .team-label.home {
-  color: #60a5fa;
+  color: var(--accent-primary);
 }
 
 .probability-bar-container {
@@ -111,7 +111,7 @@
   height: 32px;
   border-radius: 6px;
   overflow: hidden;
-  background: #0a0a14;
+  background: var(--bg-tertiary);
 }
 
 .probability-bar {
@@ -127,6 +127,10 @@
 
 .probability-bar.home {
   background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%);
+}
+
+[data-theme="dark"] .probability-bar.home {
+  background: linear-gradient(90deg, #c00 0%, #e53535 100%);
 }
 
 .probability-value {
@@ -145,7 +149,7 @@
 .predicted-score-section h4 {
   margin: 0 0 0.75rem 0;
   font-size: 0.8rem;
-  color: #888;
+  color: var(--text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -166,22 +170,22 @@
 .predicted-team .team-abbr {
   font-size: 1rem;
   font-weight: 600;
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
 .predicted-team.home .team-abbr {
-  color: #60a5fa;
+  color: var(--accent-primary);
 }
 
 .predicted-points {
   font-size: 2rem;
   font-weight: 700;
-  color: #e0e0e0;
+  color: var(--text-primary);
 }
 
 .score-separator {
   font-size: 1.5rem;
-  color: #555;
+  color: var(--text-tertiary);
 }
 
 /* Prediction Details */
@@ -190,8 +194,8 @@
   justify-content: center;
   gap: 2rem;
   padding: 1rem 0;
-  border-top: 1px solid #2a2a4a;
-  border-bottom: 1px solid #2a2a4a;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
   margin-bottom: 1rem;
 }
 
@@ -204,7 +208,7 @@
 
 .detail-label {
   font-size: 0.75rem;
-  color: #888;
+  color: var(--text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -212,7 +216,7 @@
 .detail-value {
   font-size: 1rem;
   font-weight: 600;
-  color: #e0e0e0;
+  color: var(--text-primary);
 }
 
 /* Footer */
@@ -222,21 +226,21 @@
 
 .model-info {
   font-size: 0.7rem;
-  color: #555;
+  color: var(--text-tertiary);
 }
 
 /* Actual vs Predicted (Simulation) */
 .prediction-actual-section {
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid #2a2a4a;
+  border-top: 1px solid var(--border-light);
   text-align: center;
 }
 
 .prediction-actual-section h4 {
   margin: 0 0 0.75rem 0;
   font-size: 0.8rem;
-  color: #888;
+  color: var(--text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -258,7 +262,7 @@
 .comparison-team {
   font-weight: 600;
   font-size: 0.9rem;
-  color: #94a3b8;
+  color: var(--text-secondary);
   width: 40px;
   text-align: right;
 }
@@ -266,27 +270,27 @@
 .comparison-predicted {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #e0e0e0;
+  color: var(--text-primary);
   width: 30px;
   text-align: center;
 }
 
 .comparison-vs {
   font-size: 0.7rem;
-  color: #555;
+  color: var(--text-tertiary);
 }
 
 .comparison-actual {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #7c3aed;
+  color: var(--accent-secondary);
   width: 30px;
   text-align: center;
 }
 
 .comparison-label {
   font-size: 0.65rem;
-  color: #555;
+  color: var(--text-tertiary);
   text-transform: uppercase;
 }
 
@@ -294,7 +298,7 @@
   font-size: 0.8rem;
   font-weight: 600;
   padding: 0.25rem 0.75rem;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
   display: inline-block;
 }
 

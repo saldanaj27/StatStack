@@ -15,6 +15,7 @@
   --text-muted: #d1d5db;
 
   --accent-primary: #3b82f6;
+  --accent-primary-rgb: 59, 130, 246;
   --accent-primary-hover: #2563eb;
   --accent-secondary: #8b5cf6;
   --accent-success: #16a34a;
@@ -38,6 +39,14 @@
   --wr-text: #1e40af;
   --te-bg: #fef3c7;
   --te-text: #92400e;
+
+  /* Semantic colors */
+  --warning-bg: #fef3c7;
+  --warning-border: #fcd34d;
+  --warning-text: #854d0e;
+  --danger-bg: #fef2f2;
+  --danger-border: #fecaca;
+  --danger-text: #991b1b;
 
   /* Gradients */
   --gradient-header: linear-gradient(to bottom right, #3b82f6, #2563eb);
@@ -75,6 +84,7 @@
   --text-muted: #444444;
 
   --accent-primary: #c00;
+  --accent-primary-rgb: 204, 0, 0;
   --accent-primary-hover: #a00;
   --accent-secondary: #8b5cf6;
   --accent-success: #22c55e;
@@ -88,6 +98,24 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+
+  /* Position colors (dark mode) */
+  --qb-bg: #166534;
+  --qb-text: #bbf7d0;
+  --rb-bg: #991b1b;
+  --rb-text: #fecaca;
+  --wr-bg: #1e40af;
+  --wr-text: #bfdbfe;
+  --te-bg: #92400e;
+  --te-text: #fef3c7;
+
+  /* Semantic colors */
+  --warning-bg: #422006;
+  --warning-border: #a16207;
+  --warning-text: #fbbf24;
+  --danger-bg: #450a0a;
+  --danger-border: #991b1b;
+  --danger-text: #fca5a5;
 
   /* Gradients */
   --gradient-header: linear-gradient(to bottom right, #c00, #900);
@@ -111,11 +139,6 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Smooth transitions for theme changes */
-*, *::before, *::after {
-  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Focus indicators for keyboard navigation */

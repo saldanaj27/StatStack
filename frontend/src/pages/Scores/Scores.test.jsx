@@ -9,10 +9,6 @@ vi.mock('../../api/games', () => ({
   getGames: vi.fn(),
 }))
 
-vi.mock('../../context/SimulationContext', () => ({
-  useSimulation: () => ({ simulation: { active: false, season: null, week: null } }),
-}))
-
 import { getCurrentWeekGames, getGames } from '../../api/games'
 
 // Build a set of games for week 5

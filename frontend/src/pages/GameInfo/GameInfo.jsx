@@ -15,25 +15,61 @@ export default function GameInfo() {
   const { gameId } = useParams()
   const navigate = useNavigate()
   const [game, setGame] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [numGames, setNumGames] = useState(3)
   const [activeTab, setActiveTab] = useState('overview')
   const [showActual, setShowActual] = useState(false)
 
   useEffect(() => {
     const fetchGame = async () => {
-      const data = await getGameById(gameId)
-      setGame(data)
+      setLoading(true)
+      setError(null)
+      try {
+        const data = await getGameById(gameId)
+        setGame(data)
+      } catch (err) {
+        setError(err.response?.data?.error || 'Failed to load game data')
+      } finally {
+        setLoading(false)
+      }
     }
     fetchGame()
   }, [gameId])
 
-  if (!game) {
+  useEffect(() => {
+    if (game) {
+      document.title = `${game.away_team.abbreviation} @ ${game.home_team.abbreviation} | StatStack`
+    }
+  }, [game])
+
+  if (loading) {
     return (
       <div className="loading-container">
         <div className="loading-text">Loading game...</div>
       </div>
     )
   }
+
+  if (error) {
+    return (
+      <div className="game-info-container">
+        <div className="game-info-content">
+          <button className="back-button" onClick={() => navigate('/scores')}>
+            Back to Scores
+          </button>
+          <div className="error-container">
+            <p className="error-text">{error}</p>
+            <button className="quick-link-btn" onClick={() => window.location.reload()}>
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!game) return null
 
   const isSimulated = game._simulation_masked === true
   const isFinished = game.home_score !== null && !isSimulated

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { getCurrentWeekGames, getGames } from '../../api/games'
 import GameBox from './components/GameBox'
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner'
+import EmptyState from '../../components/EmptyState/EmptyState'
 import './Scores.css'
 
 // Week name mapping for playoffs
@@ -131,14 +133,12 @@ export default function Scores() {
 
         {/* Games Grid */}
         {error ? (
-          <div className="no-games">
-            <div className="no-games-text">{error}</div>
-            <button className="quick-link-btn" onClick={() => handleWeekChange(week)}>Retry</button>
+          <div className="error-state">
+            <EmptyState message={error} />
+            <button className="retry-btn" onClick={() => handleWeekChange(week)}>Retry</button>
           </div>
         ) : loading ? (
-          <div className="loading-container">
-            <div className="loading-spinner"></div>
-          </div>
+          <LoadingSpinner />
         ) : games.length > 0 ? (
           <div className="games-grid">
             {games.map((game) => (
@@ -146,10 +146,7 @@ export default function Scores() {
             ))}
           </div>
         ) : (
-          <div className="no-games">
-            <div className="no-games-icon">🏈</div>
-            <div className="no-games-text">No games scheduled for {getWeekName(week)}</div>
-          </div>
+          <EmptyState icon="🏈" message={`No games scheduled for ${getWeekName(week)}`} />
         )}
       </div>
     </div>

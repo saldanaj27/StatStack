@@ -6,10 +6,10 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
-  background: linear-gradient(to bottom right, #3b82f6, #2563eb);
+  background: var(--gradient-header);
   color: white;
   padding: 1.5rem;
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius-md);
   margin-bottom: 1rem;
 }
 
@@ -26,7 +26,7 @@
 }
 
 .team-header p {
-  color: #bfdbfe;
+  color: rgba(255, 255, 255, 0.75);
   font-size: 0.875rem;
   margin: 0;
 }
@@ -38,7 +38,7 @@
 .section-title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-primary);
   margin-bottom: 0.75rem;
   display: flex;
   align-items: center;
@@ -48,12 +48,12 @@
 .section-title-bar {
   width: 4px;
   height: 1.5rem;
-  background-color: #3b82f6;
+  background-color: var(--accent-primary);
   border-radius: 2px;
 }
 
 .section-title-bar.defense {
-  background-color: #ef4444;
+  background-color: var(--accent-danger);
 }
 
 .stats-grid {
@@ -64,9 +64,9 @@
 }
 
 .turnover-differential {
-  background-color: #fef3c7;
-  border: 1px solid #fcd34d;
-  border-radius: 0.5rem;
+  background-color: var(--warning-bg);
+  border: 1px solid var(--warning-border);
+  border-radius: var(--border-radius-md);
   padding: 0.75rem;
   margin-bottom: 0.75rem;
 }
@@ -80,7 +80,7 @@
 .turnover-differential-label {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #374151;
+  color: var(--warning-text);
 }
 
 .turnover-differential-value {
@@ -89,16 +89,16 @@
 }
 
 .turnover-differential-value.positive {
-  color: #16a34a;
+  color: var(--accent-success);
 }
 
 .turnover-differential-value.negative {
-  color: #dc2626;
+  color: var(--accent-danger);
 }
 
 .turnover-differential-details {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   margin-top: 0.25rem;
 }
 

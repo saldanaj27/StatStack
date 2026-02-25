@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { searchPlayers } from '../../api/players'
 import ExpandablePlayerRow from './components/ExpandablePlayerRow'
 import BestTeamCard from './components/BestTeamCard'
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner'
 import './styles/Rankings.css'
 
 const POSITIONS = ['ALL', 'QB', 'RB', 'WR', 'TE']
@@ -157,9 +158,7 @@ export default function Rankings() {
 
         {/* Rankings Table */}
         {loading ? (
-          <div className="loading-container">
-            <div className="loading-spinner"></div>
-          </div>
+          <LoadingSpinner />
         ) : (
           <div className="rankings-table-container">
             <table className="rankings-table">

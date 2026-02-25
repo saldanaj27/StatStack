@@ -11,22 +11,20 @@ export function useTheme() {
   return context
 }
 
-function getTimeBasedTheme() {
-  const hour = new Date().getHours()
-  // Light mode: 6 AM - 6 PM (hours 6-17)
-  // Dark mode: 6 PM - 6 AM (hours 18-5)
-  return hour >= 6 && hour < 18 ? 'light' : 'dark'
+function getSystemTheme() {
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return 'dark'
+  }
+  return 'light'
 }
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
-    // Check localStorage for user preference
     const savedTheme = localStorage.getItem('statstack-theme')
     if (savedTheme) {
       return savedTheme
     }
-    // Otherwise use time-based theme
-    return getTimeBasedTheme()
+    return getSystemTheme()
   })
 
   const [isAutoMode, setIsAutoMode] = useState(() => {
@@ -38,21 +36,18 @@ export function ThemeProvider({ children }) {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
-  // Auto-update theme based on time when in auto mode
+  // Listen for OS theme changes when in auto mode
   useEffect(() => {
     if (!isAutoMode) return
 
-    const checkTime = () => {
-      const newTheme = getTimeBasedTheme()
-      if (newTheme !== theme) {
-        setTheme(newTheme)
-      }
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    const handleChange = (e) => {
+      setTheme(e.matches ? 'dark' : 'light')
     }
 
-    // Check every minute
-    const interval = setInterval(checkTime, 60000)
-    return () => clearInterval(interval)
-  }, [isAutoMode, theme])
+    mediaQuery.addEventListener('change', handleChange)
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [isAutoMode])
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light'
@@ -66,7 +61,7 @@ export function ThemeProvider({ children }) {
     setIsAutoMode(true)
     localStorage.removeItem('statstack-theme')
     localStorage.setItem('statstack-theme-auto', 'true')
-    setTheme(getTimeBasedTheme())
+    setTheme(getSystemTheme())
   }
 
   return (

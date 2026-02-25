@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom"
+import { useEffect } from "react"
 import NavBar from "./components/NavBar/NavBar"
 import Landing from "./pages/Landing/Landing"
 import Scores from "./pages/Scores/Scores"
@@ -8,9 +9,31 @@ import Rankings from "./pages/Rankings/Rankings"
 import StartSit from "./pages/StartSit/StartSit"
 import NotFound from "./pages/NotFound/NotFound"
 
+const PAGE_TITLES = {
+  '/': 'StatStack — Fantasy Football Analytics',
+  '/scores': 'Scores | StatStack',
+  '/players': 'Player Search | StatStack',
+  '/rankings': 'Fantasy Rankings | StatStack',
+  '/start-sit': 'Start/Sit Tool | StatStack',
+}
+
+function ScrollToTop() {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+
+    const title = PAGE_TITLES[pathname] || 'StatStack'
+    document.title = title
+  }, [pathname])
+
+  return null
+}
+
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <a href="#main-content" className="skip-link">Skip to content</a>
       <NavBar />
       <main id="main-content">

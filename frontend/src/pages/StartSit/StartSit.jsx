@@ -256,7 +256,7 @@ export default function StartSit() {
   }
 
   return (
-    <div className="startsite-page">
+    <div className="startsit-page">
       <div className="startsit-content">
         <h1 className="page-title">Start/Sit Tool</h1>
         <p className="page-subtitle">Compare two players to see who to start this week</p>
