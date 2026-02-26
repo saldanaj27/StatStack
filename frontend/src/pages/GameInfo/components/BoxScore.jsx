@@ -61,12 +61,12 @@ export default function BoxScore({ gameId }) {
       <div className="box-score-stats">
         <div className="box-score-header">
           <div className="stat-team away">
-            <TeamLogo logoUrl={away_team.logo_url} abbreviation={away_team.abbreviation} size="sm" />
+            <TeamLogo logoUrl={away_team.logo_url} abbreviation={away_team.abbreviation} teamName={away_team.name} size="sm" />
             {away_team.abbreviation}
           </div>
           <div className="stat-label-center">Stat</div>
           <div className="stat-team home">
-            <TeamLogo logoUrl={home_team.logo_url} abbreviation={home_team.abbreviation} size="sm" />
+            <TeamLogo logoUrl={home_team.logo_url} abbreviation={home_team.abbreviation} teamName={home_team.name} size="sm" />
             {home_team.abbreviation}
           </div>
         </div>

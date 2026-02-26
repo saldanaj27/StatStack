@@ -5,7 +5,7 @@
 }
 
 .game-info-content {
-  max-width: 1280px;
+  max-width: var(--content-max-width);
   margin: 0 auto;
 }
 
@@ -30,7 +30,7 @@
   border-color: var(--accent-primary);
 }
 
-.games-filter {
+.game-info-container .games-filter {
   background-color: var(--bg-card);
   border-radius: 0.5rem;
   border: 1px solid var(--border-color);
@@ -41,13 +41,13 @@
   gap: 0.5rem;
 }
 
-.games-filter label {
+.game-info-container .games-filter label {
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--text-secondary);
 }
 
-.games-filter select {
+.game-info-container .games-filter select {
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--border-color);
   border-radius: 0.375rem;
@@ -58,12 +58,12 @@
   transition: all 0.2s;
 }
 
-.games-filter select:focus {
+.game-info-container .games-filter select:focus {
   outline: none;
   border-color: var(--accent-primary);
 }
 
-.games-filter select:hover {
+.game-info-container .games-filter select:hover {
   border-color: var(--accent-primary);
 }
 
@@ -123,7 +123,7 @@
   padding: 1.5rem;
 }
 
-.section-title {
+.overview-tab .section-title {
   font-size: 1rem;
   font-weight: 600;
   color: var(--text-secondary);

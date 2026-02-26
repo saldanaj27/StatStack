@@ -87,7 +87,7 @@ export default function GameInfo() {
 
         {/* Overview Tab */}
         {activeTab === 'overview' && (
-          <div className="overview-tab">
+          <div className="overview-tab" role="tabpanel" id="tabpanel-overview" aria-labelledby="tab-overview">
             {isFinished ? (
               <>
                 <div className="game-summary">
@@ -184,10 +184,11 @@ export default function GameInfo() {
 
         {/* Team Stats Tab */}
         {activeTab === 'team-stats' && (
-          <div className="team-stats-tab">
+          <div className="team-stats-tab" role="tabpanel" id="tabpanel-team-stats" aria-labelledby="tab-team-stats">
             <div className="games-filter">
-              <label>Show stats from last:</label>
+              <label htmlFor="team-stats-games">Show stats from last:</label>
               <select
+                id="team-stats-games"
                 value={numGames}
                 onChange={(e) => setNumGames(Number(e.target.value))}
               >
@@ -216,10 +217,11 @@ export default function GameInfo() {
 
         {/* Player Stats Tab */}
         {activeTab === 'player-stats' && (
-          <div className="player-stats-tab">
+          <div className="player-stats-tab" role="tabpanel" id="tabpanel-player-stats" aria-labelledby="tab-player-stats">
             <div className="games-filter">
-              <label>Show stats from last:</label>
+              <label htmlFor="player-stats-games">Show stats from last:</label>
               <select
+                id="player-stats-games"
                 value={numGames}
                 onChange={(e) => setNumGames(Number(e.target.value))}
               >

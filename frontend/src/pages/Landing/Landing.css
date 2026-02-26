@@ -85,7 +85,7 @@
 /* Features Section */
 .features-section {
   padding: 3rem 2rem;
-  max-width: 1200px;
+  max-width: var(--content-max-width);
   margin: 0 auto;
 }
 
@@ -151,7 +151,7 @@
 /* Preview Section */
 .preview-section {
   padding: 2rem;
-  max-width: 1200px;
+  max-width: var(--content-max-width);
   margin: 0 auto;
 }
 
@@ -242,8 +242,8 @@
   margin-top: 2rem;
 }
 
-.stats-grid {
-  max-width: 1000px;
+.landing-page .stats-grid {
+  max-width: var(--content-max-width);
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -251,19 +251,19 @@
   text-align: center;
 }
 
-.stat-item {
+.landing-page .stat-item {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.stat-value {
+.landing-page .stat-value {
   font-size: 2.5rem;
   font-weight: 800;
   color: var(--accent-primary);
 }
 
-.stat-label {
+.landing-page .stat-label {
   font-size: 0.9rem;
   color: var(--text-secondary);
   font-weight: 500;

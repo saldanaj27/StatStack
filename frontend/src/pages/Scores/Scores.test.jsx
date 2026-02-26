@@ -35,21 +35,21 @@ describe('Scores', () => {
     expect(document.querySelector('.loading-spinner')).toBeInTheDocument()
   })
 
-  it('renders week title', async () => {
+  it('renders week title with season', async () => {
     getCurrentWeekGames.mockResolvedValue(mockWeek5Games)
     renderWithProviders(<Scores />)
 
     await waitFor(() => {
-      expect(screen.getByText('Week 5')).toBeInTheDocument()
+      expect(screen.getByText('2025 Week 5')).toBeInTheDocument()
     })
   })
 
-  it('renders playoff week name', async () => {
+  it('renders playoff week name with season', async () => {
     getCurrentWeekGames.mockResolvedValue([mockPlayoffGame])
     renderWithProviders(<Scores />)
 
     await waitFor(() => {
-      expect(screen.getByText('Wild Card')).toBeInTheDocument()
+      expect(screen.getByText('2025 Wild Card')).toBeInTheDocument()
     })
   })
 
@@ -107,12 +107,25 @@ describe('Scores', () => {
     renderWithProviders(<Scores />)
 
     await waitFor(() => {
-      expect(screen.getByText('Week 5')).toBeInTheDocument()
+      expect(screen.getByText('2025 Week 5')).toBeInTheDocument()
     })
 
     const select = screen.getByLabelText('Week:')
     const options = select.querySelectorAll('option')
     expect(options).toHaveLength(22)
+  })
+
+  it('renders season selector with options', async () => {
+    getCurrentWeekGames.mockResolvedValue(mockWeek5Games)
+    renderWithProviders(<Scores />)
+
+    await waitFor(() => {
+      expect(screen.getByText('2025 Week 5')).toBeInTheDocument()
+    })
+
+    const seasonSelect = screen.getByLabelText('Season:')
+    const options = seasonSelect.querySelectorAll('option')
+    expect(options.length).toBeGreaterThanOrEqual(2)
   })
 
   it('loads games on week change', async () => {
@@ -121,7 +134,7 @@ describe('Scores', () => {
     renderWithProviders(<Scores />)
 
     await waitFor(() => {
-      expect(screen.getByText('Week 5')).toBeInTheDocument()
+      expect(screen.getByText('2025 Week 5')).toBeInTheDocument()
     })
 
     getGames.mockResolvedValue([{ ...mockGame, week: 3, id: '2025_03_SF_KC' }])

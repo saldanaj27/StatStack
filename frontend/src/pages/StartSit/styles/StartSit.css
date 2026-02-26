@@ -5,12 +5,12 @@
 }
 
 .startsit-content {
-  max-width: 1200px;
+  max-width: var(--content-max-width);
   margin: 0 auto;
   padding: 1.5rem;
 }
 
-.page-title {
+.startsit-page .page-title {
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -48,7 +48,7 @@
   margin-bottom: 0.75rem;
 }
 
-.search-input {
+.startsit-page .search-input {
   width: 100%;
   padding: 0.75rem 1rem;
   border: 1px solid var(--border-color);
@@ -59,11 +59,11 @@
   margin-bottom: 0.5rem;
 }
 
-.search-input::placeholder {
+.startsit-page .search-input::placeholder {
   color: var(--text-tertiary);
 }
 
-.search-input:focus {
+.startsit-page .search-input:focus {
   outline: none;
   border-color: var(--accent-primary);
 }
@@ -247,30 +247,30 @@
   margin-bottom: 0.75rem;
 }
 
-.stats-grid {
+.startsit-page .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
 }
 
-.stat-box {
+.startsit-page .stat-box {
   background-color: var(--bg-tertiary);
   border-radius: 0.375rem;
   padding: 0.75rem;
   text-align: center;
 }
 
-.stat-value {
+.startsit-page .stat-value {
   color: var(--text-primary);
   font-weight: 700;
   font-size: 1.125rem;
 }
 
-.stat-value.highlight {
+.startsit-page .stat-value.highlight {
   color: var(--accent-primary);
 }
 
-.stat-label {
+.startsit-page .stat-label {
   color: var(--text-tertiary);
   font-size: 0.7rem;
   text-transform: uppercase;
@@ -303,7 +303,7 @@
   font-size: 0.75rem;
 }
 
-.defense-stats {
+.startsit-page .defense-stats {
   display: flex;
   gap: 1rem;
 }
@@ -360,7 +360,7 @@
 
 
 /* Position badge */
-.position-badge {
+.startsit-page .position-badge {
   font-size: 0.7rem;
   font-weight: 700;
   padding: 0.2rem 0.5rem;
@@ -368,10 +368,10 @@
   margin-left: 0.5rem;
 }
 
-.position-badge.qb { background-color: var(--qb-bg); color: var(--qb-text); }
-.position-badge.rb { background-color: var(--rb-bg); color: var(--rb-text); }
-.position-badge.wr { background-color: var(--wr-bg); color: var(--wr-text); }
-.position-badge.te { background-color: var(--te-bg); color: var(--te-text); }
+.startsit-page .position-badge.qb { background-color: var(--qb-bg); color: var(--qb-text); }
+.startsit-page .position-badge.rb { background-color: var(--rb-bg); color: var(--rb-text); }
+.startsit-page .position-badge.wr { background-color: var(--wr-bg); color: var(--wr-text); }
+.startsit-page .position-badge.te { background-color: var(--te-bg); color: var(--te-text); }
 
 /* Responsive */
 @media (max-width: 768px) {

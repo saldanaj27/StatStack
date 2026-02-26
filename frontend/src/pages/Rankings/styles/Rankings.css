@@ -5,12 +5,12 @@
 }
 
 .rankings-content {
-  max-width: 1400px;
+  max-width: var(--content-max-width);
   margin: 0 auto;
   padding: 1.5rem;
 }
 
-.page-title {
+.rankings-page .page-title {
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -58,19 +58,19 @@
   color: white;
 }
 
-.games-filter {
+.rankings-page .games-filter {
   margin-left: auto;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.games-filter label {
+.rankings-page .games-filter label {
   color: var(--text-secondary);
   font-size: 0.875rem;
 }
 
-.games-filter select {
+.rankings-page .games-filter select {
   background-color: var(--bg-input);
   color: var(--text-primary);
   border: 1px solid var(--border-color);
@@ -80,7 +80,7 @@
   cursor: pointer;
 }
 
-.games-filter select:hover {
+.rankings-page .games-filter select:hover {
   border-color: var(--accent-primary);
 }
 
@@ -158,7 +158,7 @@
   gap: 0.75rem;
 }
 
-.player-image {
+.rankings-page .player-image {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -166,7 +166,7 @@
   background-color: var(--bg-tertiary);
 }
 
-.player-image-placeholder {
+.rankings-page .player-image-placeholder {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -179,12 +179,12 @@
   font-size: 0.875rem;
 }
 
-.player-info {
+.rankings-page .player-info {
   display: flex;
   flex-direction: column;
 }
 
-.player-name {
+.rankings-page .player-name {
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -195,7 +195,7 @@
 }
 
 /* Position badge */
-.position-badge {
+.rankings-page .position-badge {
   font-size: 0.7rem;
   font-weight: 700;
   padding: 0.2rem 0.5rem;
@@ -203,22 +203,22 @@
   display: inline-block;
 }
 
-.position-badge.qb {
+.rankings-page .position-badge.qb {
   background-color: var(--qb-bg);
   color: var(--qb-text);
 }
 
-.position-badge.rb {
+.rankings-page .position-badge.rb {
   background-color: var(--rb-bg);
   color: var(--rb-text);
 }
 
-.position-badge.wr {
+.rankings-page .position-badge.wr {
   background-color: var(--wr-bg);
   color: var(--wr-text);
 }
 
-.position-badge.te {
+.rankings-page .position-badge.te {
   background-color: var(--te-bg);
   color: var(--te-text);
 }
@@ -276,6 +276,11 @@
   cursor: not-allowed;
 }
 
+/* Scroll hint (hidden on desktop) */
+.scroll-hint {
+  display: none;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .rankings-content {
@@ -287,12 +292,24 @@
     align-items: stretch;
   }
 
-  .games-filter {
+  .rankings-page .games-filter {
     margin-left: 0;
   }
 
   .rankings-table-container {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Mobile scroll hint */
+  .scroll-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
   }
 
   .rankings-table {

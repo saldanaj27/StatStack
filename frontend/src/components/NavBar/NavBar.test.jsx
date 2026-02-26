@@ -29,7 +29,7 @@ describe('NavBar', () => {
   it('renders theme toggle button', () => {
     renderWithProviders(<NavBar />)
 
-    const themeBtn = screen.getByTitle(/Switch to (light|dark) mode/)
+    const themeBtn = screen.getByLabelText(/Switch to (light|dark) mode/)
     expect(themeBtn).toBeInTheDocument()
   })
 
@@ -37,24 +37,24 @@ describe('NavBar', () => {
     const user = userEvent.setup()
     renderWithProviders(<NavBar />)
 
-    const themeBtn = screen.getByTitle(/Switch to (light|dark) mode/)
+    const themeBtn = screen.getByLabelText(/Switch to (light|dark) mode/)
     await user.click(themeBtn)
 
-    // After toggle, the title should change
-    expect(screen.getByTitle(/Switch to (light|dark) mode/)).toBeInTheDocument()
+    // After toggle, the label should change
+    expect(screen.getByLabelText(/Switch to (light|dark) mode/)).toBeInTheDocument()
   })
 
   it('renders mobile menu button', () => {
     renderWithProviders(<NavBar />)
 
-    expect(screen.getByLabelText('Toggle menu')).toBeInTheDocument()
+    expect(screen.getByLabelText('Open menu')).toBeInTheDocument()
   })
 
   it('toggles mobile menu on button click', async () => {
     const user = userEvent.setup()
     renderWithProviders(<NavBar />)
 
-    const menuBtn = screen.getByLabelText('Toggle menu')
+    const menuBtn = screen.getByLabelText('Open menu')
     const navLinks = document.querySelector('.navbar-links')
 
     expect(navLinks).not.toHaveClass('open')
@@ -62,7 +62,7 @@ describe('NavBar', () => {
     await user.click(menuBtn)
     expect(navLinks).toHaveClass('open')
 
-    await user.click(menuBtn)
+    await user.click(screen.getByLabelText('Close menu'))
     expect(navLinks).not.toHaveClass('open')
   })
 
@@ -78,7 +78,7 @@ describe('NavBar', () => {
     renderWithProviders(<NavBar />)
 
     // Open menu
-    const menuBtn = screen.getByLabelText('Toggle menu')
+    const menuBtn = screen.getByLabelText('Open menu')
     await user.click(menuBtn)
     expect(document.querySelector('.navbar-links')).toHaveClass('open')
 

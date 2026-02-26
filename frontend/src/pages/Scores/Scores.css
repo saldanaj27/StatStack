@@ -6,7 +6,7 @@
 
 /* Main Content */
 .scores-content {
-  max-width: 1400px;
+  max-width: var(--content-max-width);
   margin: 0 auto;
   padding: 1.5rem;
 }

@@ -8,10 +8,14 @@ const TABS = [
 
 export default function TabBar({ activeTab, onTabChange }) {
   return (
-    <div className="tab-bar">
+    <div className="tab-bar" role="tablist" aria-label="Game information tabs">
       {TABS.map((tab) => (
         <button
           key={tab.id}
+          role="tab"
+          id={`tab-${tab.id}`}
+          aria-selected={activeTab === tab.id}
+          aria-controls={`tabpanel-${tab.id}`}
           className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
           onClick={() => onTabChange(tab.id)}
         >

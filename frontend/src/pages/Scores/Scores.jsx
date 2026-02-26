@@ -23,6 +23,9 @@ const getWeekLabel = (weekNum) => {
   return getWeekName(weekNum)
 }
 
+// Available seasons
+const SEASONS = [2025, 2024, 2023, 2022, 2021, 2020]
+
 export default function Scores() {
   const [week, setWeek] = useState(null)
   const [season, setSeason] = useState(2025)
@@ -54,17 +57,22 @@ export default function Scores() {
           return
         }
 
-        // No upcoming games - search backwards for most recent week with games
-        // Start from week 22 (Super Bowl) and go back
-        for (let w = 22; w >= 1; w--) {
-          const data = await getGames(season, w)
-          if (data.length > 0) {
-            const sortedGames = [...data].sort((a, b) => {
+        // No upcoming games - search for most recent week with games
+        // Fetch all weeks in parallel instead of sequential waterfall
+        const weeks = Array.from({ length: 22 }, (_, i) => i + 1)
+        const results = await Promise.allSettled(
+          weeks.map((w) => getGames(season, w))
+        )
+
+        // Find the highest week that has games
+        for (let i = results.length - 1; i >= 0; i--) {
+          if (results[i].status === 'fulfilled' && results[i].value.length > 0) {
+            const sortedGames = [...results[i].value].sort((a, b) => {
               const dateA = new Date(`${a.date}T${a.time}`)
               const dateB = new Date(`${b.date}T${b.time}`)
               return dateA - dateB
             })
-            setWeek(w)
+            setWeek(i + 1)
             setGames(sortedGames)
             setLoading(false)
             return
@@ -84,14 +92,13 @@ export default function Scores() {
     initializeWeek()
   }, [])
 
-  // Handle manual week selection changes
-  const handleWeekChange = async (newWeek) => {
-    setWeek(newWeek)
+  // Fetch games for a given season/week
+  const fetchGames = async (s, w) => {
     setLoading(true)
     setError(null)
 
     try {
-      const data = await getGames(season, newWeek)
+      const data = await getGames(s, w)
 
       const sortedGames = [...data].sort((a, b) => {
         const dateA = new Date(`${a.date}T${a.time}`)
@@ -108,13 +115,36 @@ export default function Scores() {
     }
   }
 
+  // Handle manual week selection changes
+  const handleWeekChange = (newWeek) => {
+    setWeek(newWeek)
+    fetchGames(season, newWeek)
+  }
+
+  // Handle season selection changes
+  const handleSeasonChange = (newSeason) => {
+    setSeason(newSeason)
+    setWeek(1)
+    fetchGames(newSeason, 1)
+  }
+
   return (
     <div className="scores-page">
       <div className="scores-content">
         {/* Week Selector Bar */}
         <div className="week-bar">
-          <h1 className="week-bar-title">{getWeekName(week)}</h1>
+          <h1 className="week-bar-title">{season} {getWeekName(week)}</h1>
           <div className="week-selector">
+            <label htmlFor="season-select">Season:</label>
+            <select
+              id="season-select"
+              value={season}
+              onChange={(e) => handleSeasonChange(Number(e.target.value))}
+            >
+              {SEASONS.map((s) => (
+                <option key={s} value={s}>{s}</option>
+              ))}
+            </select>
             <label htmlFor="week-select">Week:</label>
             <select
               id="week-select"

@@ -1,17 +1,9 @@
 /* Player Card */
 .player-card {
   background-color: var(--bg-card);
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius-md);
   border: 1px solid var(--border-color);
   padding: 1rem;
-  transition: all 0.2s;
-  cursor: pointer;
-}
-
-.player-card:hover {
-  border-color: var(--accent-primary);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
 }
 
 .player-card-header {
@@ -21,7 +13,7 @@
   margin-bottom: 0.75rem;
 }
 
-.player-image {
+.player-card .player-image {
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -30,7 +22,7 @@
   border: 2px solid var(--border-color);
 }
 
-.player-image-placeholder {
+.player-card .player-image-placeholder {
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -44,18 +36,18 @@
   font-size: 1.25rem;
 }
 
-.player-info {
+.player-card .player-info {
   flex: 1;
 }
 
-.player-name {
+.player-card .player-name {
   font-weight: 600;
   font-size: 1rem;
   color: var(--text-primary);
   margin: 0 0 0.25rem 0;
 }
 
-.player-meta {
+.player-card .player-meta {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -63,29 +55,29 @@
   color: var(--text-secondary);
 }
 
-.position-badge {
+.player-card .position-badge {
   font-size: 0.7rem;
   font-weight: 700;
   padding: 0.2rem 0.5rem;
   border-radius: 0.25rem;
 }
 
-.position-badge.qb {
+.player-card .position-badge.qb {
   background-color: var(--qb-bg);
   color: var(--qb-text);
 }
 
-.position-badge.rb {
+.player-card .position-badge.rb {
   background-color: var(--rb-bg);
   color: var(--rb-text);
 }
 
-.position-badge.wr {
+.player-card .position-badge.wr {
   background-color: var(--wr-bg);
   color: var(--wr-text);
 }
 
-.position-badge.te {
+.player-card .position-badge.te {
   background-color: var(--te-bg);
   color: var(--te-text);
 }
@@ -118,17 +110,17 @@
   border-top: 1px solid var(--border-color);
 }
 
-.stat-item {
+.player-card .stat-item {
   text-align: center;
 }
 
-.stat-value {
+.player-card .stat-value {
   font-weight: 600;
   font-size: 0.875rem;
   color: var(--text-primary);
 }
 
-.stat-label {
+.player-card .stat-label {
   font-size: 0.65rem;
   color: var(--text-tertiary);
   text-transform: uppercase;

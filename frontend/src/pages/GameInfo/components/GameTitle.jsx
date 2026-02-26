@@ -69,10 +69,10 @@ export default function GameTitle({ game }) {
       <div className="game-title-content">
         <div className="game-title-info">
           <h1 className="game-title-h1">
-            <TeamLogo logoUrl={game.away_team.logo_url} abbreviation={game.away_team.abbreviation} size="lg" />
+            <TeamLogo logoUrl={game.away_team.logo_url} abbreviation={game.away_team.abbreviation} teamName={game.away_team.name} size="lg" />
             {game.away_team.abbreviation} <span className="team-record">({game.away_team.record})</span>
             {' '}@{' '}
-            <TeamLogo logoUrl={game.home_team.logo_url} abbreviation={game.home_team.abbreviation} size="lg" />
+            <TeamLogo logoUrl={game.home_team.logo_url} abbreviation={game.home_team.abbreviation} teamName={game.home_team.name} size="lg" />
             {game.home_team.abbreviation} <span className="team-record">({game.home_team.record})</span>
           </h1>
           <div className="game-title-details">

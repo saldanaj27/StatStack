@@ -107,7 +107,7 @@ export default function Landing() {
               <Link key={game.id} to={`/game/${game.id}`} className="preview-game-card">
                 <div className="preview-teams">
                   <span className="preview-team">
-                    <TeamLogo logoUrl={game.away_team.logo_url} abbreviation={game.away_team.abbreviation} size="sm" />
+                    <TeamLogo logoUrl={game.away_team.logo_url} abbreviation={game.away_team.abbreviation} teamName={game.away_team.name} size="sm" />
                     {game.away_team.abbreviation}
                     {game.away_team.record && (
                       <span className="preview-record">{game.away_team.record}</span>
@@ -115,7 +115,7 @@ export default function Landing() {
                   </span>
                   <span className="preview-at">@</span>
                   <span className="preview-team">
-                    <TeamLogo logoUrl={game.home_team.logo_url} abbreviation={game.home_team.abbreviation} size="sm" />
+                    <TeamLogo logoUrl={game.home_team.logo_url} abbreviation={game.home_team.abbreviation} teamName={game.home_team.name} size="sm" />
                     {game.home_team.abbreviation}
                     {game.home_team.record && (
                       <span className="preview-record">{game.home_team.record}</span>
@@ -139,7 +139,7 @@ export default function Landing() {
       <section className="stats-section">
         <div className="stats-grid">
           <div className="stat-item">
-            <span className="stat-value">5</span>
+            <span className="stat-value">{new Date().getFullYear() - 2020}</span>
             <span className="stat-label">Years of Data</span>
           </div>
           <div className="stat-item">
@@ -151,8 +151,8 @@ export default function Landing() {
             <span className="stat-label">Players Tracked</span>
           </div>
           <div className="stat-item">
-            <span className="stat-value">Real-time</span>
-            <span className="stat-label">Updates</span>
+            <span className="stat-value">ML</span>
+            <span className="stat-label">Predictions</span>
           </div>
         </div>
       </section>

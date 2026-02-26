@@ -64,17 +64,17 @@
   border-bottom: none;
 }
 
-.stat-value {
+.box-score .stat-value {
   font-weight: 600;
   font-size: 0.875rem;
   color: var(--text-primary);
 }
 
-.stat-value.away {
+.box-score .stat-value.away {
   text-align: left;
 }
 
-.stat-value.home {
+.box-score .stat-value.home {
   text-align: right;
 }
 
@@ -204,7 +204,7 @@
     padding: 0 0.5rem;
   }
 
-  .stat-value {
+  .box-score .stat-value {
     font-size: 0.8rem;
   }
 }

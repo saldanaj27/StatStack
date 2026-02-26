@@ -5,12 +5,12 @@
 }
 
 .players-content {
-  max-width: 1400px;
+  max-width: var(--content-max-width);
   margin: 0 auto;
   padding: 1.5rem;
 }
 
-.page-title {
+.players-page .page-title {
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -37,7 +37,7 @@
   min-width: 200px;
 }
 
-.search-input {
+.players-page .search-input {
   width: 100%;
   padding: 0.625rem 1rem;
   border: 1px solid var(--border-color);
@@ -48,11 +48,11 @@
   transition: all 0.2s;
 }
 
-.search-input::placeholder {
+.players-page .search-input::placeholder {
   color: var(--text-tertiary);
 }
 
-.search-input:focus {
+.players-page .search-input:focus {
   outline: none;
   border-color: var(--accent-primary);
   box-shadow: 0 0 0 2px rgba(var(--accent-primary-rgb), 0.2);

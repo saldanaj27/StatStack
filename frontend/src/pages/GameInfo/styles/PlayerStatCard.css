@@ -1,139 +1,139 @@
 .player-stat-card {
-  background-color: #f9fafb;
+  background-color: var(--bg-tertiary);
   border-radius: 0.5rem;
   padding: 1rem;
   transition: all 0.2s;
 }
 
 .player-stat-card:hover {
-  background-color: #f3f4f6;
+  background-color: var(--bg-card-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
 }
 
-.player-header {
+.player-stat-card .player-header {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.75rem;
 }
 
-.player-name {
+.player-stat-card .player-name {
   font-weight: 600;
-  color: #111827;
+  color: var(--text-primary);
   flex: 1;
 }
 
-.games-played {
+.player-stat-card .games-played {
   font-size: 0.75rem;
-  color: #6b7280;
-  background-color: #e5e7eb;
+  color: var(--text-secondary);
+  background-color: var(--bg-secondary);
   padding: 0.125rem 0.5rem;
   border-radius: 0.25rem;
 }
 
-.player-stats-grid {
+.player-stat-card .player-stats-grid {
   display: grid;
   gap: 0.75rem;
   margin-bottom: 0.75rem;
 }
 
-.player-stats-grid.qb {
+.player-stat-card .player-stats-grid.qb {
   grid-template-columns: repeat(5, 1fr);
 }
 
-.player-stats-grid.rb {
+.player-stat-card .player-stats-grid.rb {
   grid-template-columns: repeat(6, 1fr);
 }
 
-.player-stats-grid.wr-te {
+.player-stat-card .player-stats-grid.wr-te {
   grid-template-columns: repeat(7, 1fr);
 }
 
-.stat-item {
+.player-stat-card .stat-item {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.stat-item.advanced {
-  background-color: #f0f9ff;
+.player-stat-card .stat-item.advanced {
+  background-color: var(--info-bg, rgba(var(--accent-primary-rgb), 0.1));
   border-radius: 0.25rem;
   padding: 0.25rem 0.5rem;
 }
 
-.stat-item.advanced .stat-label {
-  color: #0369a1;
+.player-stat-card .stat-item.advanced .stat-label {
+  color: var(--accent-primary);
 }
 
-.stat-item.advanced .stat-value {
-  color: #0c4a6e;
+.player-stat-card .stat-item.advanced .stat-value {
+  color: var(--accent-primary);
 }
 
-.stat-label {
+.player-stat-card .stat-label {
   font-size: 0.7rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   text-transform: uppercase;
 }
 
-.stat-value {
+.player-stat-card .stat-value {
   font-weight: 600;
   font-size: 1rem;
-  color: #111827;
+  color: var(--text-primary);
 }
 
-.fantasy-points-row {
+.player-stat-card .fantasy-points-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-top: 0.75rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--border-color);
 }
 
-.fantasy-label {
+.player-stat-card .fantasy-label {
   font-size: 0.875rem;
-  color: #4b5563;
+  color: var(--text-secondary);
 }
 
-.fantasy-value {
+.player-stat-card .fantasy-value {
   font-weight: 700;
   font-size: 1.125rem;
-  color: #8b5cf6;
+  color: var(--accent-primary);
 }
 
-/* Position badges matching PositionStatCard */
-.position-badge {
+/* Position badges */
+.player-stat-card .position-badge {
   font-size: 0.75rem;
   font-weight: 600;
   padding: 0.125rem 0.5rem;
   border-radius: 0.25rem;
 }
 
-.position-badge.qb {
-  background-color: #dcfce7;
-  color: #166534;
+.player-stat-card .position-badge.qb {
+  background-color: var(--qb-bg);
+  color: var(--qb-text);
 }
 
-.position-badge.rb {
-  background-color: #fee2e2;
-  color: #991b1b;
+.player-stat-card .position-badge.rb {
+  background-color: var(--rb-bg);
+  color: var(--rb-text);
 }
 
-.position-badge.wr {
-  background-color: #dbeafe;
-  color: #1e40af;
+.player-stat-card .position-badge.wr {
+  background-color: var(--wr-bg);
+  color: var(--wr-text);
 }
 
-.position-badge.te {
-  background-color: #fef3c7;
-  color: #92400e;
+.player-stat-card .position-badge.te {
+  background-color: var(--te-bg);
+  color: var(--te-text);
 }
 
 /* Responsive */
 @media (max-width: 640px) {
-  .player-stats-grid.qb,
-  .player-stats-grid.rb,
-  .player-stats-grid.wr-te {
+  .player-stat-card .player-stats-grid.qb,
+  .player-stat-card .player-stats-grid.rb,
+  .player-stat-card .player-stats-grid.wr-te {
     grid-template-columns: repeat(3, 1fr);
   }
 }

@@ -88,6 +88,12 @@ export default function Rankings() {
     return sortConfig.direction === 'desc' ? '▼' : '▲'
   }
 
+  // Get aria-sort value
+  const getAriaSort = (key) => {
+    if (sortConfig.key !== key) return undefined
+    return sortConfig.direction === 'desc' ? 'descending' : 'ascending'
+  }
+
   // Define columns based on position filter
   const getColumns = () => {
     const baseColumns = [
@@ -127,11 +133,12 @@ export default function Rankings() {
 
         {/* Filters */}
         <div className="filters-bar">
-          <div className="position-filters">
+          <div className="position-filters" role="group" aria-label="Filter by position">
             {POSITIONS.map(pos => (
               <button
                 key={pos}
                 className={`position-btn ${position === pos ? 'active' : ''}`}
+                aria-pressed={position === pos}
                 onClick={() => setPosition(pos)}
               >
                 {pos}
@@ -140,8 +147,10 @@ export default function Rankings() {
           </div>
 
           <div className="games-filter">
-            <label>Last</label>
+            <label htmlFor="rankings-games-select">Last</label>
             <select
+              id="rankings-games-select"
+              aria-label="Number of recent games"
               value={numGames}
               onChange={(e) => setNumGames(Number(e.target.value))}
             >
@@ -160,6 +169,8 @@ export default function Rankings() {
         {loading ? (
           <LoadingSpinner />
         ) : (
+          <>
+          <div className="scroll-hint" aria-hidden="true">Swipe to scroll table &rarr;</div>
           <div className="rankings-table-container">
             <table className="rankings-table">
               <thead>
@@ -169,9 +180,13 @@ export default function Rankings() {
                       key={col.key}
                       className={`${col.sortable ? 'sortable' : ''} ${sortConfig.key === col.key ? 'sorted' : ''}`}
                       onClick={() => col.sortable && handleSort(col.key)}
+                      onKeyDown={(e) => { if (col.sortable && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); handleSort(col.key) } }}
+                      tabIndex={col.sortable ? 0 : undefined}
+                      role={col.sortable ? 'columnheader' : undefined}
+                      aria-sort={col.sortable ? getAriaSort(col.key) : undefined}
                     >
                       {col.label}
-                      {col.sortable && <span className="sort-icon">{getSortIcon(col.key)}</span>}
+                      {col.sortable && <span className="sort-icon" aria-hidden="true">{getSortIcon(col.key)}</span>}
                     </th>
                   ))}
                 </tr>
@@ -212,6 +227,7 @@ export default function Rankings() {
               </div>
             </div>
           </div>
+          </>
         )}
       </div>
     </div>

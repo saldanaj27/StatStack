@@ -81,15 +81,19 @@ export default function Players() {
             <div className="search-input-wrapper">
               <input
                 type="text"
+                id="player-search"
                 className="search-input"
                 placeholder="Search players by name..."
+                aria-label="Search players by name"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
 
             <select
+              id="position-filter"
               className="filter-select"
+              aria-label="Filter by position"
               value={position}
               onChange={(e) => setPosition(e.target.value)}
             >
@@ -101,7 +105,9 @@ export default function Players() {
             </select>
 
             <select
+              id="team-filter"
               className="filter-select"
+              aria-label="Filter by team"
               value={team}
               onChange={(e) => setTeam(e.target.value)}
             >
@@ -115,11 +121,13 @@ export default function Players() {
           </div>
 
           <div className="fpts-filters">
-            <label className="fpts-filter-label">FPTS/G:</label>
+            <span className="fpts-filter-label" id="fpts-label">FPTS/G:</span>
             <input
               type="number"
+              id="fpts-min"
               className="fpts-input"
               placeholder="Min"
+              aria-label="Minimum fantasy points per game"
               value={minFpts}
               onChange={(e) => setMinFpts(e.target.value)}
               step="0.1"
@@ -128,8 +136,10 @@ export default function Players() {
             <span className="fpts-dash">-</span>
             <input
               type="number"
+              id="fpts-max"
               className="fpts-input"
               placeholder="Max"
+              aria-label="Maximum fantasy points per game"
               value={maxFpts}
               onChange={(e) => setMaxFpts(e.target.value)}
               step="0.1"

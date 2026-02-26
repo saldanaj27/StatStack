@@ -265,13 +265,15 @@ export default function StartSit() {
         <div className="player-selection">
           {/* Player 1 Selector */}
           <div className="player-selector">
-            <div className="selector-label">Player 1</div>
+            <label className="selector-label" htmlFor="player1-search">Player 1</label>
             {!player1 ? (
               <>
                 <input
                   type="text"
+                  id="player1-search"
                   className="search-input"
                   placeholder="Search for a player..."
+                  aria-label="Search for player 1"
                   value={search1}
                   onChange={(e) => setSearch1(e.target.value)}
                 />
@@ -321,13 +323,15 @@ export default function StartSit() {
 
           {/* Player 2 Selector */}
           <div className="player-selector">
-            <div className="selector-label">Player 2</div>
+            <label className="selector-label" htmlFor="player2-search">Player 2</label>
             {!player2 ? (
               <>
                 <input
                   type="text"
+                  id="player2-search"
                   className="search-input"
                   placeholder="Search for a player..."
+                  aria-label="Search for player 2"
                   value={search2}
                   onChange={(e) => setSearch2(e.target.value)}
                 />

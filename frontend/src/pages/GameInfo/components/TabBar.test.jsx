@@ -52,10 +52,18 @@ describe('TabBar', () => {
     expect(mockOnTabChange).toHaveBeenCalledWith('overview')
   })
 
-  it('renders as buttons for accessibility', () => {
+  it('renders tabs with ARIA tab pattern', () => {
     render(<TabBar activeTab="overview" onTabChange={mockOnTabChange} />)
 
-    const buttons = screen.getAllByRole('button')
-    expect(buttons).toHaveLength(3)
+    const tabs = screen.getAllByRole('tab')
+    expect(tabs).toHaveLength(3)
+
+    expect(screen.getByRole('tablist')).toBeInTheDocument()
+
+    const overviewTab = screen.getByRole('tab', { name: 'Overview' })
+    expect(overviewTab).toHaveAttribute('aria-selected', 'true')
+
+    const teamStatsTab = screen.getByRole('tab', { name: 'Team Stats' })
+    expect(teamStatsTab).toHaveAttribute('aria-selected', 'false')
   })
 })
