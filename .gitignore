@@ -76,6 +76,10 @@ docker-compose.override.yml
 # Jupyter
 .ipynb_checkpoints/
 
+# Audit files
+AUDIT.md
+**/UI_AUDIT.md
+
 # Claude Code
 .claude/
 .agents/
