@@ -26,9 +26,11 @@ const getWeekLabel = (weekNum) => {
 // Available seasons
 const SEASONS = [2025, 2024, 2023, 2022, 2021, 2020]
 
+const DEFAULT_SEASON = SEASONS[0]
+
 export default function Scores() {
   const [week, setWeek] = useState(null)
-  const [season, setSeason] = useState(2025)
+  const [season, setSeason] = useState(DEFAULT_SEASON)
   const [games, setGames] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -61,7 +63,7 @@ export default function Scores() {
         // Fetch all weeks in parallel instead of sequential waterfall
         const weeks = Array.from({ length: 22 }, (_, i) => i + 1)
         const results = await Promise.allSettled(
-          weeks.map((w) => getGames(season, w))
+          weeks.map((w) => getGames(DEFAULT_SEASON, w))
         )
 
         // Find the highest week that has games

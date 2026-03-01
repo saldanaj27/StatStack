@@ -7,6 +7,13 @@ export default function NavBar() {
   const location = useLocation()
   const { theme, toggleTheme, isAutoMode, enableAutoMode } = useTheme()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [prevPathname, setPrevPathname] = useState(location.pathname)
+
+  // Close menu on route change (adjust state during render, not in effect)
+  if (location.pathname !== prevPathname) {
+    setPrevPathname(location.pathname)
+    setMobileMenuOpen(false)
+  }
 
   const navLinks = [
     { to: '/', label: 'Home' },
@@ -42,11 +49,6 @@ export default function NavBar() {
     }
     return () => { document.body.style.overflow = '' }
   }, [mobileMenuOpen])
-
-  // Close menu on route change
-  useEffect(() => {
-    closeMenu()
-  }, [location.pathname, closeMenu])
 
   return (
     <nav className="navbar" aria-label="Main navigation">
