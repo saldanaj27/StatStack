@@ -11,16 +11,26 @@
 }
 
 .trend-up {
-  background-color: rgba(22, 163, 74, 0.15);
-  color: var(--accent-success);
+  background-color: #dcfce7;
+  color: #15803d;
 }
 
 .trend-down {
-  background-color: rgba(220, 38, 38, 0.15);
-  color: var(--accent-danger);
+  background-color: #fee2e2;
+  color: #b91c1c;
 }
 
 .trend-stable {
-  background-color: rgba(107, 114, 128, 0.15);
+  background-color: var(--bg-tertiary);
   color: var(--text-secondary);
+}
+
+[data-theme="dark"] .trend-up {
+  background-color: #14532d;
+  color: #86efac;
+}
+
+[data-theme="dark"] .trend-down {
+  background-color: #7f1d1d;
+  color: #fca5a5;
 }

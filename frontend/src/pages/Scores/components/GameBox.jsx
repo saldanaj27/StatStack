@@ -44,7 +44,7 @@ export default function GameBox({ game }) {
 
       {/* Away Team Row */}
       <div className={`team-row ${awayWins ? 'winner' : ''}`}>
-        <TeamLogo logoUrl={game.away_team.logo_url} abbreviation={game.away_team.abbreviation} teamName={game.away_team.name} size="sm" />
+        <TeamLogo logoUrl={game.away_team.logo_url} abbreviation={game.away_team.abbreviation} teamName={game.away_team.name} size="md" />
         <span className="team-abbr">{game.away_team.abbreviation}</span>
         <span className="team-name">{game.away_team.name}</span>
         <span className="team-record">{game.away_team.record}</span>
@@ -55,7 +55,7 @@ export default function GameBox({ game }) {
 
       {/* Home Team Row */}
       <div className={`team-row ${homeWins ? 'winner' : ''}`}>
-        <TeamLogo logoUrl={game.home_team.logo_url} abbreviation={game.home_team.abbreviation} teamName={game.home_team.name} size="sm" />
+        <TeamLogo logoUrl={game.home_team.logo_url} abbreviation={game.home_team.abbreviation} teamName={game.home_team.name} size="md" />
         <span className="team-abbr">{game.home_team.abbreviation}</span>
         <span className="team-name">{game.home_team.name}</span>
         <span className="team-record">{game.home_team.record}</span>
