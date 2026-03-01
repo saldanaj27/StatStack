@@ -32,25 +32,25 @@ export default function Landing() {
       to: '/scores',
       icon: '🏈',
       title: 'Live Scores',
-      description: 'Track all NFL games with live scores, stats, and weather conditions',
+      description: 'Track all NFL games with scores, box scores, and weather conditions',
     },
     {
       to: '/players',
       icon: '👤',
       title: 'Player Search',
-      description: 'Find any player and view their fantasy performance and trends',
+      description: 'Search any player and explore their stats, trends, and performance history',
     },
     {
       to: '/rankings',
       icon: '📊',
       title: 'Rankings',
-      description: 'Weekly fantasy rankings by position with detailed stats',
+      description: 'Player rankings by position with sortable stats across any game window',
     },
     {
       to: '/start-sit',
       icon: '⚖️',
       title: 'Start/Sit',
-      description: 'Compare players head-to-head to make lineup decisions',
+      description: 'Compare two players head-to-head with matchup context and defensive data',
     },
   ]
 
@@ -60,10 +60,10 @@ export default function Landing() {
       <section className="hero">
         <div className="hero-content">
           <h1 className="hero-title">
-            Make Smarter Fantasy Decisions
+            NFL Analytics, Simplified
           </h1>
           <p className="hero-subtitle">
-            Advanced NFL analytics, player comparisons, and matchup insights to dominate your fantasy league
+            Deep player stats, head-to-head comparisons, ML-powered predictions, and matchup insights — all in one place
           </p>
           <div className="hero-actions">
             <Link to="/scores" className="btn btn-primary">

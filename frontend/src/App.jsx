@@ -10,10 +10,10 @@ import StartSit from "./pages/StartSit/StartSit"
 import NotFound from "./pages/NotFound/NotFound"
 
 const PAGE_TITLES = {
-  '/': 'StatStack — Fantasy Football Analytics',
+  '/': 'StatStack — NFL Analytics',
   '/scores': 'Scores | StatStack',
   '/players': 'Player Search | StatStack',
-  '/rankings': 'Fantasy Rankings | StatStack',
+  '/rankings': 'Player Rankings | StatStack',
   '/start-sit': 'Start/Sit Tool | StatStack',
 }
 

@@ -19,8 +19,8 @@ describe('Landing', () => {
     getCurrentWeekGames.mockResolvedValue([])
     renderWithProviders(<Landing />)
 
-    expect(screen.getByText('Make Smarter Fantasy Decisions')).toBeInTheDocument()
-    expect(screen.getByText(/Advanced NFL analytics/)).toBeInTheDocument()
+    expect(screen.getByText('NFL Analytics, Simplified')).toBeInTheDocument()
+    expect(screen.getByText(/Deep player stats/)).toBeInTheDocument()
   })
 
   it('renders CTA buttons', async () => {
@@ -87,7 +87,7 @@ describe('Landing', () => {
 
     // Page should still render hero and features despite API failure
     await waitFor(() => {
-      expect(screen.getByText('Make Smarter Fantasy Decisions')).toBeInTheDocument()
+      expect(screen.getByText('NFL Analytics, Simplified')).toBeInTheDocument()
     })
     expect(screen.queryByText('Upcoming Games')).not.toBeInTheDocument()
   })
