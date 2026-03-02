@@ -9,6 +9,7 @@ import BoxScore from "./components/BoxScore"
 import PredictionCard from "./components/PredictionCard"
 import HeadToHead from "./components/HeadToHead"
 import CommonOpponents from "./components/CommonOpponents"
+import GameInfoSkeleton from "./components/GameInfoSkeleton"
 import "./styles/GameInfo.css"
 
 export default function GameInfo() {
@@ -45,8 +46,13 @@ export default function GameInfo() {
 
   if (loading) {
     return (
-      <div className="loading-container">
-        <div className="loading-text">Loading game...</div>
+      <div className="game-info-container">
+        <div className="game-info-content">
+          <button className="back-button" onClick={() => navigate('/scores')}>
+            Back to Scores
+          </button>
+          <GameInfoSkeleton />
+        </div>
       </div>
     )
   }

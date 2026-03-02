@@ -28,11 +28,11 @@ describe('Scores', () => {
     vi.clearAllMocks()
   })
 
-  it('shows loading spinner', () => {
+  it('shows skeleton loaders while loading', () => {
     getCurrentWeekGames.mockImplementation(() => new Promise(() => {}))
     renderWithProviders(<Scores />)
 
-    expect(document.querySelector('.loading-spinner')).toBeInTheDocument()
+    expect(document.querySelector('.skeleton')).toBeInTheDocument()
   })
 
   it('renders week title with season', async () => {

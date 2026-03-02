@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getCurrentWeekGames, getGames } from '../../api/games'
 import GameBox from './components/GameBox'
-import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner'
+import GameBoxSkeleton from './components/GameBoxSkeleton'
 import EmptyState from '../../components/EmptyState/EmptyState'
 import './Scores.css'
 
@@ -170,7 +170,11 @@ export default function Scores() {
             <button className="retry-btn" onClick={() => handleWeekChange(week)}>Retry</button>
           </div>
         ) : loading ? (
-          <LoadingSpinner />
+          <div className="games-grid">
+            {Array.from({ length: 8 }, (_, i) => (
+              <GameBoxSkeleton key={i} />
+            ))}
+          </div>
         ) : games.length > 0 ? (
           <div className="games-grid">
             {games.map((game) => (

@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { searchPlayers } from '../../api/players'
 import ExpandablePlayerRow from './components/ExpandablePlayerRow'
 import BestTeamCard from './components/BestTeamCard'
-import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner'
+import RankingsTableSkeleton from './components/RankingsTableSkeleton'
 import './styles/Rankings.css'
 
 const POSITIONS = ['ALL', 'QB', 'RB', 'WR', 'TE']
@@ -166,31 +166,30 @@ export default function Rankings() {
         <BestTeamCard numGames={numGames} />
 
         {/* Rankings Table */}
-        {loading ? (
-          <LoadingSpinner />
-        ) : (
-          <>
-          <div className="scroll-hint" aria-hidden="true">Swipe to scroll table &rarr;</div>
-          <div className="rankings-table-container">
-            <table className="rankings-table">
-              <thead>
-                <tr>
-                  {columns.map(col => (
-                    <th
-                      key={col.key}
-                      className={`${col.sortable ? 'sortable' : ''} ${sortConfig.key === col.key ? 'sorted' : ''}`}
-                      onClick={() => col.sortable && handleSort(col.key)}
-                      onKeyDown={(e) => { if (col.sortable && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); handleSort(col.key) } }}
-                      tabIndex={col.sortable ? 0 : undefined}
-                      role={col.sortable ? 'columnheader' : undefined}
-                      aria-sort={col.sortable ? getAriaSort(col.key) : undefined}
-                    >
-                      {col.label}
-                      {col.sortable && <span className="sort-icon" aria-hidden="true">{getSortIcon(col.key)}</span>}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
+        <div className="scroll-hint" aria-hidden="true">Swipe to scroll table &rarr;</div>
+        <div className="rankings-table-container">
+          <table className="rankings-table">
+            <thead>
+              <tr>
+                {columns.map(col => (
+                  <th
+                    key={col.key}
+                    className={`${col.sortable ? 'sortable' : ''} ${sortConfig.key === col.key ? 'sorted' : ''}`}
+                    onClick={() => col.sortable && handleSort(col.key)}
+                    onKeyDown={(e) => { if (col.sortable && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); handleSort(col.key) } }}
+                    tabIndex={col.sortable ? 0 : undefined}
+                    role={col.sortable ? 'columnheader' : undefined}
+                    aria-sort={col.sortable ? getAriaSort(col.key) : undefined}
+                  >
+                    {col.label}
+                    {col.sortable && <span className="sort-icon" aria-hidden="true">{getSortIcon(col.key)}</span>}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            {loading ? (
+              <RankingsTableSkeleton columns={columns} />
+            ) : (
               <tbody>
                 {paginatedPlayers.map((player, index) => (
                   <ExpandablePlayerRow
@@ -202,9 +201,11 @@ export default function Rankings() {
                   />
                 ))}
               </tbody>
-            </table>
+            )}
+          </table>
 
-            {/* Pagination */}
+          {/* Pagination */}
+          {!loading && (
             <div className="pagination">
               <div className="pagination-info">
                 Showing {(currentPage - 1) * PAGE_SIZE + 1}-{Math.min(currentPage * PAGE_SIZE, sortedPlayers.length)} of {sortedPlayers.length}
@@ -226,9 +227,8 @@ export default function Rankings() {
                 </button>
               </div>
             </div>
-          </div>
-          </>
-        )}
+          )}
+        </div>
       </div>
     </div>
   )

@@ -2,11 +2,13 @@ import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { getCurrentWeekGames } from '../../api/games'
 import TeamLogo from '../../components/TeamLogo/TeamLogo'
+import PreviewGamesSkeleton from './components/PreviewGamesSkeleton'
 import './Landing.css'
 
 export default function Landing() {
   const [currentWeek, setCurrentWeek] = useState(null)
   const [upcomingGames, setUpcomingGames] = useState([])
+  const [loadingGames, setLoadingGames] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,6 +24,8 @@ export default function Landing() {
         }
       } catch (_err) {
         // Logged by Axios interceptor
+      } finally {
+        setLoadingGames(false)
       }
     }
     fetchData()
@@ -96,7 +100,9 @@ export default function Landing() {
       </section>
 
       {/* Upcoming Games Preview */}
-      {upcomingGames.length > 0 && (
+      {loadingGames ? (
+        <PreviewGamesSkeleton />
+      ) : upcomingGames.length > 0 ? (
         <section className="preview-section">
           <div className="preview-header">
             <h2>Upcoming Games</h2>
@@ -133,7 +139,7 @@ export default function Landing() {
             ))}
           </div>
         </section>
-      )}
+      ) : null}
 
       {/* Stats Highlight */}
       <section className="stats-section">

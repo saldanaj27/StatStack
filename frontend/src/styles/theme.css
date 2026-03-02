@@ -65,6 +65,10 @@
   --border-radius-md: 0.5rem;
   --border-radius-lg: 0.75rem;
 
+  /* Skeleton */
+  --skeleton-base: #e5e7eb;
+  --skeleton-shine: #f3f4f6;
+
   /* Nav specific */
   --nav-bg: #3b82f6;
   --nav-text: #ffffff;
@@ -122,6 +126,10 @@
 
   /* Gradients */
   --gradient-header: linear-gradient(to bottom right, #c00, #900);
+
+  /* Skeleton */
+  --skeleton-base: #2a2a2a;
+  --skeleton-shine: #3a3a3a;
 
   /* Nav specific */
   --nav-bg: #c00;

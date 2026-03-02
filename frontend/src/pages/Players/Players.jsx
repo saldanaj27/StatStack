@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import { searchPlayers, getTeams } from '../../api/players'
 import useDebounce from '../../hooks/useDebounce'
 import PlayerCard from './components/PlayerCard'
-import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner'
+import PlayerCardSkeleton from './components/PlayerCardSkeleton'
 import EmptyState from '../../components/EmptyState/EmptyState'
 import './styles/Players.css'
 
@@ -157,7 +157,11 @@ export default function Players() {
 
         {/* Players Grid */}
         {loading ? (
-          <LoadingSpinner />
+          <div className="players-grid">
+            {Array.from({ length: 12 }, (_, i) => (
+              <PlayerCardSkeleton key={i} />
+            ))}
+          </div>
         ) : filteredPlayers.length > 0 ? (
           <div className="players-grid">
             {filteredPlayers.map((player) => (
