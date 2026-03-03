@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { getCurrentWeekGames } from '../../api/games'
+import { useToast } from '../../context/ToastContext'
 import TeamLogo from '../../components/TeamLogo/TeamLogo'
 import PreviewGamesSkeleton from './components/PreviewGamesSkeleton'
 import './Landing.css'
@@ -9,6 +10,7 @@ export default function Landing() {
   const [currentWeek, setCurrentWeek] = useState(null)
   const [upcomingGames, setUpcomingGames] = useState([])
   const [loadingGames, setLoadingGames] = useState(true)
+  const { addToast } = useToast()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,13 +25,13 @@ export default function Landing() {
           setUpcomingGames(upcoming)
         }
       } catch (_err) {
-        // Logged by Axios interceptor
+        addToast("Couldn't load upcoming games", { type: 'error' })
       } finally {
         setLoadingGames(false)
       }
     }
     fetchData()
-  }, [])
+  }, [addToast])
 
   const features = [
     {

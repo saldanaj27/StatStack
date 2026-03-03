@@ -1,13 +1,16 @@
 import { render } from '@testing-library/react'
 import { BrowserRouter, MemoryRouter } from 'react-router-dom'
 import { ThemeProvider } from '../context/ThemeContext'
+import { ToastProvider } from '../context/ToastContext'
 
 // Render with all providers
 export function renderWithProviders(ui, { route = '/', ...options } = {}) {
   return render(
     <MemoryRouter initialEntries={[route]}>
       <ThemeProvider>
-        {ui}
+        <ToastProvider>
+          {ui}
+        </ToastProvider>
       </ThemeProvider>
     </MemoryRouter>,
     options

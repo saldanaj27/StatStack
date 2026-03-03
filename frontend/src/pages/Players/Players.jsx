@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { searchPlayers, getTeams } from '../../api/players'
+import { useToast } from '../../context/ToastContext'
 import useDebounce from '../../hooks/useDebounce'
 import PlayerCard from './components/PlayerCard'
 import PlayerCardSkeleton from './components/PlayerCardSkeleton'
@@ -15,6 +16,7 @@ export default function Players() {
   const [team, setTeam] = useState('')
   const [minFpts, setMinFpts] = useState('')
   const [maxFpts, setMaxFpts] = useState('')
+  const { addToast } = useToast()
 
   const debouncedSearch = useDebounce(search)
 
@@ -28,11 +30,11 @@ export default function Players() {
         )
         setTeams(sortedTeams)
       } catch (_error) {
-        // Logged by Axios interceptor
+        addToast("Couldn't load team filters", { type: 'warning' })
       }
     }
     loadTeams()
-  }, [])
+  }, [addToast])
 
   // Search players
   const fetchPlayers = useCallback(async () => {
@@ -47,10 +49,11 @@ export default function Players() {
       setPlayers(data.players)
     } catch (_error) {
       setPlayers([])
+      addToast("Player search failed", { type: 'error' })
     } finally {
       setLoading(false)
     }
-  }, [debouncedSearch, position, team])
+  }, [debouncedSearch, position, team, addToast])
 
   useEffect(() => {
     fetchPlayers()
