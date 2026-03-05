@@ -149,3 +149,10 @@
   font-size: 0.65rem;
   color: var(--text-tertiary);
 }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .player-stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

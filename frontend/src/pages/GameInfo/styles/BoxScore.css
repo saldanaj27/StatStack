@@ -195,6 +195,11 @@
 
 /* Responsive */
 @media (max-width: 640px) {
+  .box-score-stats {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .performers-grid {
     grid-template-columns: 1fr;
   }

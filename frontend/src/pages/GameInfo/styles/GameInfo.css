@@ -302,6 +302,10 @@
 }
 
 @media (max-width: 768px) {
+  .game-info-container {
+    padding: 1rem;
+  }
+
   .teams-comparison {
     flex-direction: column;
   }
