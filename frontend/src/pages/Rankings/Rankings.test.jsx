@@ -153,4 +153,14 @@ describe('Rankings', () => {
       )
     })
   })
+
+  it('shows error message and retry button on API failure', async () => {
+    searchPlayers.mockRejectedValue(new Error('Network error'))
+    renderWithProviders(<Rankings />)
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'Retry' })).toBeInTheDocument()
+    })
+    expect(screen.getByText('Failed to load rankings. Please try again.')).toBeInTheDocument()
+  })
 })

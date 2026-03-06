@@ -293,4 +293,24 @@ describe('StartSit', () => {
       expect(screen.getByText('Pass TD')).toBeInTheDocument()
     })
   })
+
+  it('shows toast when comparison data fails to load', async () => {
+    const user = userEvent.setup()
+    searchPlayers.mockResolvedValue({ players: [mockPlayer] })
+    getPlayerComparison.mockRejectedValue(new Error('Server error'))
+    renderWithProviders(<StartSit />)
+
+    const inputs = screen.getAllByPlaceholderText('Search for a player...')
+    await user.type(inputs[0], 'Mahomes')
+
+    await waitFor(() => {
+      expect(screen.getByText('Patrick Mahomes')).toBeInTheDocument()
+    }, { timeout: 1000 })
+
+    await user.click(screen.getByText('Patrick Mahomes'))
+
+    await waitFor(() => {
+      expect(screen.getByText("Couldn't load comparison data")).toBeInTheDocument()
+    })
+  })
 })

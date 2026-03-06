@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { searchPlayers } from '../../api/players'
+import { useToast } from '../../context/ToastContext'
 import ExpandablePlayerRow from './components/ExpandablePlayerRow'
 import BestTeamCard from './components/BestTeamCard'
 import RankingsTableSkeleton from './components/RankingsTableSkeleton'
@@ -11,31 +12,37 @@ const PAGE_SIZE = 25
 export default function Rankings() {
   const [players, setPlayers] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
   const [position, setPosition] = useState('ALL')
   const [numGames, setNumGames] = useState(3)
   const [sortConfig, setSortConfig] = useState({ key: 'avg_fantasy_points', direction: 'desc' })
   const [currentPage, setCurrentPage] = useState(1)
+  const { addToast } = useToast()
 
   // Fetch players
-  useEffect(() => {
-    const fetchPlayers = async () => {
-      setLoading(true)
-      try {
-        const data = await searchPlayers({
-          position: position === 'ALL' ? undefined : position,
-          games: numGames,
-          limit: 200
-        })
-        setPlayers(data.players)
-        setCurrentPage(1)
-      } catch (_error) {
-        setPlayers([])
-      } finally {
-        setLoading(false)
-      }
+  const fetchPlayers = async () => {
+    setLoading(true)
+    setError(false)
+    try {
+      const data = await searchPlayers({
+        position: position === 'ALL' ? undefined : position,
+        games: numGames,
+        limit: 200
+      })
+      setPlayers(data.players)
+      setCurrentPage(1)
+    } catch (_error) {
+      setPlayers([])
+      setError(true)
+      addToast('Failed to load rankings', { type: 'error' })
+    } finally {
+      setLoading(false)
     }
+  }
+
+  useEffect(() => {
     fetchPlayers()
-  }, [position, numGames])
+  }, [position, numGames]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Sort players
   const sortedPlayers = useMemo(() => {
@@ -189,6 +196,17 @@ export default function Rankings() {
             </thead>
             {loading ? (
               <RankingsTableSkeleton columns={columns} />
+            ) : error ? (
+              <tbody>
+                <tr>
+                  <td colSpan={columns.length}>
+                    <div className="error-state">
+                      <p>Failed to load rankings. Please try again.</p>
+                      <button className="retry-btn" onClick={fetchPlayers}>Retry</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
             ) : (
               <tbody>
                 {paginatedPlayers.map((player, index) => (
@@ -205,7 +223,7 @@ export default function Rankings() {
           </table>
 
           {/* Pagination */}
-          {!loading && (
+          {!loading && !error && (
             <div className="pagination">
               <div className="pagination-info">
                 Showing {(currentPage - 1) * PAGE_SIZE + 1}-{Math.min(currentPage * PAGE_SIZE, sortedPlayers.length)} of {sortedPlayers.length}

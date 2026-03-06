@@ -9,31 +9,43 @@ export default function PlayerStatsSection({ team, numGames }) {
   const [playerStats, setPlayerStats] = useState(null)
   const [usageMetrics, setUsageMetrics] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
   const [activePosition, setActivePosition] = useState('RB')
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true)
-      try {
-        const [playerData, usageData] = await Promise.all([
-          getPlayerStats(numGames, team.id),
-          getUsageMetrics(numGames, team.id)
-        ])
-        setPlayerStats(playerData)
-        setUsageMetrics(usageData)
-      } catch (_error) {
-        // Logged by Axios interceptor
-      } finally {
-        setLoading(false)
-      }
+  const fetchData = async () => {
+    setLoading(true)
+    setError(false)
+    try {
+      const [playerData, usageData] = await Promise.all([
+        getPlayerStats(numGames, team.id),
+        getUsageMetrics(numGames, team.id)
+      ])
+      setPlayerStats(playerData)
+      setUsageMetrics(usageData)
+    } catch (_error) {
+      setError(true)
+    } finally {
+      setLoading(false)
     }
-    fetchData()
-  }, [numGames, team.id])
+  }
 
-  if (loading || !playerStats || !usageMetrics) {
+  useEffect(() => {
+    fetchData()
+  }, [numGames, team.id]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (loading) {
     return (
       <div className="loading-container">
         <div className="loading-text">Loading player stats...</div>
+      </div>
+    )
+  }
+
+  if (error || !playerStats || !usageMetrics) {
+    return (
+      <div className="loading-container">
+        <p>Failed to load player stats.</p>
+        <button className="retry-btn" onClick={fetchData}>Retry</button>
       </div>
     )
   }

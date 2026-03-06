@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { searchPlayers } from '../../api/players'
 import { getPlayerComparison } from '../../api/analytics'
+import { useToast } from '../../context/ToastContext'
 import useDebounce from '../../hooks/useDebounce'
 import TeamLogo from '../../components/TeamLogo/TeamLogo'
 import './styles/StartSit.css'
@@ -21,6 +22,7 @@ export default function StartSit() {
   const [loading2, setLoading2] = useState(false)
 
   const [numGames] = useState(3)
+  const { addToast } = useToast()
 
   const debouncedSearch1 = useDebounce(search1)
   const debouncedSearch2 = useDebounce(search2)
@@ -71,11 +73,11 @@ export default function StartSit() {
       const data = await getPlayerComparison(player1.id, numGames)
       setPlayer1Data(data)
     } catch (_error) {
-      // Logged by Axios interceptor
+      addToast("Couldn't load comparison data", { type: 'error' })
     } finally {
       setLoading1(false)
     }
-  }, [player1, numGames])
+  }, [player1, numGames, addToast])
 
   // Fetch player 2 comparison data
   const fetchPlayer2Data = useCallback(async () => {
@@ -85,11 +87,11 @@ export default function StartSit() {
       const data = await getPlayerComparison(player2.id, numGames)
       setPlayer2Data(data)
     } catch (_error) {
-      // Logged by Axios interceptor
+      addToast("Couldn't load comparison data", { type: 'error' })
     } finally {
       setLoading2(false)
     }
-  }, [player2, numGames])
+  }, [player2, numGames, addToast])
 
   useEffect(() => { fetchPlayer1Data() }, [fetchPlayer1Data])
   useEffect(() => { fetchPlayer2Data() }, [fetchPlayer2Data])

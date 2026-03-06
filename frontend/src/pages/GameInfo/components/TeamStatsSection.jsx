@@ -15,40 +15,51 @@ export default function TeamStatsSection({ team, numGames }) {
   const [qbStats, setQbStats] = useState(null)
   const [gameLog, setGameLog] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+
+  const fetchAllData = async () => {
+    setLoading(true)
+    setError(false)
+    try {
+      const [teamData, rbData, wrData, teData, qbData, gameLogData] = await Promise.all([
+        getRecentStats(numGames, team.id),
+        getDefenseAllowed(numGames, team.id, 'RB'),
+        getDefenseAllowed(numGames, team.id, 'WR'),
+        getDefenseAllowed(numGames, team.id, 'TE'),
+        getDefenseAllowed(numGames, team.id, 'QB'),
+        getTeamGameLog(team.id, numGames)
+      ])
+
+      setTeamStats(teamData)
+      setRbStats(rbData)
+      setWrStats(wrData)
+      setTeStats(teData)
+      setQbStats(qbData)
+      setGameLog(gameLogData)
+    } catch (_error) {
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
-    const fetchAllData = async () => {
-      setLoading(true)
-      try {
-        const [teamData, rbData, wrData, teData, qbData, gameLogData] = await Promise.all([
-          getRecentStats(numGames, team.id),
-          getDefenseAllowed(numGames, team.id, 'RB'),
-          getDefenseAllowed(numGames, team.id, 'WR'),
-          getDefenseAllowed(numGames, team.id, 'TE'),
-          getDefenseAllowed(numGames, team.id, 'QB'),
-          getTeamGameLog(team.id, numGames)
-        ])
-
-        setTeamStats(teamData)
-        setRbStats(rbData)
-        setWrStats(wrData)
-        setTeStats(teData)
-        setQbStats(qbData)
-        setGameLog(gameLogData)
-      } catch (_error) {
-        // Logged by Axios interceptor
-      } finally {
-        setLoading(false)
-      }
-    }
-
     fetchAllData()
-  }, [numGames, team.id])
+  }, [numGames, team.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (loading || !teamStats || !rbStats || !wrStats || !teStats || !qbStats) {
+  if (loading) {
     return (
       <div className="loading-container">
         <div className="loading-text">Loading...</div>
+      </div>
+    )
+  }
+
+  if (error || !teamStats || !rbStats || !wrStats || !teStats || !qbStats) {
+    return (
+      <div className="loading-container">
+        <p>Failed to load team stats.</p>
+        <button className="retry-btn" onClick={fetchAllData}>Retry</button>
       </div>
     )
   }
