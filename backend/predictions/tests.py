@@ -154,6 +154,15 @@ class PredictionServiceTests(TestCase):
         self.assertIsNone(svc._model)
         self.assertIsNone(svc._model_version)
 
+    @override_settings(
+        CACHES={
+            "default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}
+        },
+    )
+    def test_clear_cache_works_with_locmem(self):
+        """clear_cache should not raise with LocMemCache (no delete_pattern)."""
+        PredictionService.clear_cache()  # Should not raise
+
 
 @override_settings(
     CACHES={"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache"}},
