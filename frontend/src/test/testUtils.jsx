@@ -238,7 +238,7 @@ export const mockPrediction = {
 
 // Mock head-to-head data
 export const mockHeadToHead = {
-  series_record: { team1_wins: 3, team2_wins: 1, ties: 0 },
+  series_record: { team1_wins: 3, team2_wins: 1, ties: 0, home_wins: 3, total_games: 4 },
   matchups: [
     {
       game_id: '2024_06_SF_KC',
@@ -246,6 +246,8 @@ export const mockHeadToHead = {
       week: 6,
       team1_score: 28,
       team2_score: 18,
+      home_team_id: 1,
+      location: 'GEHA Field',
       team1_total_yards: 390,
       team2_total_yards: 310,
     },
@@ -255,6 +257,8 @@ export const mockHeadToHead = {
       week: 22,
       team1_score: 22,
       team2_score: 25,
+      home_team_id: 1,
+      location: 'Allegiant Stadium',
       team1_total_yards: 350,
       team2_total_yards: 370,
     },

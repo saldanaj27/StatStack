@@ -148,6 +148,7 @@ class GameAnalyticsMixin:
         matchups = []
         team1_wins = 0
         team2_wins = 0
+        home_team_wins = 0
         ties = 0
 
         for game in games:
@@ -165,6 +166,9 @@ class GameAnalyticsMixin:
             else:
                 ties += 1
 
+            if game.home_score > game.away_score:
+                home_team_wins += 1
+
             t1_stats = FootballTeamGameStat.objects.filter(
                 game=game, team_id=team1_id
             ).first()
@@ -180,6 +184,8 @@ class GameAnalyticsMixin:
                     "date": game.date.isoformat(),
                     "team1_score": t1_score,
                     "team2_score": t2_score,
+                    "home_team_id": game.home_team_id,
+                    "location": game.location or "",
                     "team1_total_yards": (
                         (t1_stats.pass_yards + t1_stats.rush_yards) if t1_stats else 0
                     ),
@@ -205,6 +211,8 @@ class GameAnalyticsMixin:
                 "team1_wins": team1_wins,
                 "team2_wins": team2_wins,
                 "ties": ties,
+                "home_wins": home_team_wins,
+                "total_games": len(matchups),
             },
         }
 

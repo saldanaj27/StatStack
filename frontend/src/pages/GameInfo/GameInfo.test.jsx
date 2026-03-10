@@ -26,6 +26,18 @@ vi.mock('./components/CommonOpponents', () => ({
   default: () => <div data-testid="mock-common-opponents">MockCommonOpponents</div>,
 }))
 
+vi.mock('./components/DecisionSummary', () => ({
+  default: () => <div data-testid="mock-decision-summary">MockDecisionSummary</div>,
+}))
+
+vi.mock('./components/TeamTrendsPanel', () => ({
+  default: () => <div data-testid="mock-team-trends">MockTeamTrends</div>,
+}))
+
+vi.mock('./components/KeyPlayerMatchups', () => ({
+  default: () => <div data-testid="mock-key-matchups">MockKeyMatchups</div>,
+}))
+
 vi.mock('./components/TeamStatsSection', () => ({
   default: () => <div data-testid="mock-team-stats">MockTeamStats</div>,
 }))
@@ -196,6 +208,36 @@ describe('GameInfo', () => {
     await user.click(screen.getByText('View Player Stats →'))
 
     expect(screen.getAllByTestId('mock-player-stats')).toHaveLength(2)
+  })
+
+  it('renders TeamTrendsPanel and KeyPlayerMatchups for finished game', async () => {
+    getGameById.mockResolvedValue(mockGame)
+    renderWithProviders(<GameInfo />)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('mock-team-trends')).toBeInTheDocument()
+      expect(screen.getByTestId('mock-key-matchups')).toBeInTheDocument()
+    })
+  })
+
+  it('renders DecisionSummary for upcoming game', async () => {
+    getGameById.mockResolvedValue(mockUpcomingGame)
+    renderWithProviders(<GameInfo />)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('mock-decision-summary')).toBeInTheDocument()
+    })
+  })
+
+  it('does not render DecisionSummary for finished game', async () => {
+    getGameById.mockResolvedValue(mockGame)
+    renderWithProviders(<GameInfo />)
+
+    await waitFor(() => {
+      expect(screen.getAllByText('Final Score').length).toBeGreaterThanOrEqual(1)
+    })
+
+    expect(screen.queryByTestId('mock-decision-summary')).not.toBeInTheDocument()
   })
 
   it('navigates back to /scores on back button click', async () => {

@@ -81,4 +81,43 @@ describe('HeadToHead', () => {
       expect(screen.getByText('390')).toBeInTheDocument()
     })
   })
+
+  it('shows venue indicator for each matchup', async () => {
+    getHeadToHead.mockResolvedValue(mockHeadToHead)
+    render(<HeadToHead team1={team1} team2={team2} />)
+
+    await waitFor(() => {
+      // team1 is SF (id=2), home_team_id is 1 (KC) in both matchups
+      // so team1 (SF) was away in both → should show "@"
+      const venueCells = document.querySelectorAll('.h2h-venue')
+      expect(venueCells).toHaveLength(2)
+      expect(venueCells[0].textContent).toBe('@')
+      expect(venueCells[1].textContent).toBe('@')
+    })
+  })
+
+  it('shows trend insight when home team dominates', async () => {
+    getHeadToHead.mockResolvedValue(mockHeadToHead)
+    render(<HeadToHead team1={team1} team2={team2} />)
+
+    await waitFor(() => {
+      // home_wins=3 out of 4 total_games = 75% → trend should show
+      expect(screen.getByText('Home team has won 3 of 4 matchups')).toBeInTheDocument()
+    })
+  })
+
+  it('does not show trend insight when evenly split', async () => {
+    const evenData = {
+      ...mockHeadToHead,
+      series_record: { team1_wins: 2, team2_wins: 2, ties: 0, home_wins: 2, total_games: 4 },
+    }
+    getHeadToHead.mockResolvedValue(evenData)
+    render(<HeadToHead team1={team1} team2={team2} />)
+
+    await waitFor(() => {
+      expect(screen.getByText('Series tied 2-2')).toBeInTheDocument()
+    })
+
+    expect(document.querySelector('.h2h-trend')).not.toBeInTheDocument()
+  })
 })

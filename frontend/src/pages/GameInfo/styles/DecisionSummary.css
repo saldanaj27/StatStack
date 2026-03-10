@@ -1,0 +1,53 @@
+.decision-summary {
+  background: var(--bg-secondary);
+  border-left: 4px solid var(--accent-primary);
+  border-radius: var(--border-radius-md);
+  padding: 1rem 1.25rem;
+  margin-top: 1rem;
+}
+
+.decision-summary-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.decision-summary-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.decision-line {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.prediction-line {
+  font-weight: 600;
+}
+
+.form-record {
+  font-weight: 600;
+}
+
+.decision-weather-alerts {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.weather-alert-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(234, 179, 8, 0.15);
+  color: #eab308;
+  border: 1px solid rgba(234, 179, 8, 0.25);
+}

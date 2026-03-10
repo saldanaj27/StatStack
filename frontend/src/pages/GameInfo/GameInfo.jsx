@@ -9,6 +9,9 @@ import BoxScore from "./components/BoxScore"
 import PredictionCard from "./components/PredictionCard"
 import HeadToHead from "./components/HeadToHead"
 import CommonOpponents from "./components/CommonOpponents"
+import DecisionSummary from "./components/DecisionSummary"
+import TeamTrendsPanel from "./components/TeamTrendsPanel"
+import KeyPlayerMatchups from "./components/KeyPlayerMatchups"
 import GameInfoSkeleton from "./components/GameInfoSkeleton"
 import "./styles/GameInfo.css"
 
@@ -165,11 +168,18 @@ export default function GameInfo() {
                   homeTeam={game.home_team.abbreviation}
                   awayTeam={game.away_team.abbreviation}
                 />
+                <DecisionSummary
+                  game={game}
+                  homeTeam={game.home_team}
+                  awayTeam={game.away_team}
+                />
               </div>
             )}
 
+            <TeamTrendsPanel homeTeam={game.home_team} awayTeam={game.away_team} />
             <HeadToHead team1={game.away_team} team2={game.home_team} />
             <CommonOpponents team1={game.away_team} team2={game.home_team} season={game.season} />
+            <KeyPlayerMatchups homeTeam={game.home_team} awayTeam={game.away_team} />
 
             <div className="quick-links">
               <button
