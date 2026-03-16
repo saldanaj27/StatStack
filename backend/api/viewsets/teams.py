@@ -5,5 +5,6 @@ from teams.models import Team
 
 
 class TeamViewSet(viewsets.ModelViewSet):
-    queryset = Team.objects.all()
+    queryset = Team.objects.all().order_by("abbreviation")
     serializer_class = TeamSerializer
+    pagination_class = None
